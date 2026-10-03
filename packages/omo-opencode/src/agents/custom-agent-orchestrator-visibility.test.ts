@@ -8,7 +8,7 @@ describe("createBuiltinAgents custom agent visibility", () => {
 	test("#given runtime custom agents #when orchestrator prompts are built #then custom agents are not advertised for automatic delegation", async () => {
 		//#given
 		const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-			new Set(["anthropic/claude-opus-4-8", "openai/gpt-5.5", "openai/gpt-5.6-sol"])
+			new Set(["anthropic/claude-opus-4-8", "openai/gpt-5.5", "openai/gpt-6.1-sol"])
 		)
 
 		try {

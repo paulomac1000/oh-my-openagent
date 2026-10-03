@@ -19,7 +19,12 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
         variant: "max",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "medium",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "medium",
       },
@@ -28,7 +33,12 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
   ultrabrain: {
     fallbackChain: [
       {
-        providers: ["openai", "quotio-openai", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "max",
+      },
+      {
+        providers: ["quotio-openai", "vercel"],
         model: "gpt-5.6-sol",
         variant: "max",
       },
@@ -38,7 +48,7 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
         variant: "max",
       },
       {
-        providers: ["openai", "opencode", "vercel"],
+        providers: ["opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "max",
       },
@@ -47,7 +57,12 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
   deep: {
     fallbackChain: [
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "medium",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "medium",
       },
@@ -95,7 +110,12 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
   "unspecified-low": {
     fallbackChain: [
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-terra",
         variant: "high",
       },
@@ -134,7 +154,12 @@ export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
         variant: "xhigh",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "high",
       },

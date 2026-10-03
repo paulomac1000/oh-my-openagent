@@ -1228,15 +1228,15 @@ describe("createEventHandler - model fallback", () => {
     const second = await triggerRetryCycle("opencode-go", "kimi-k3")
 
     //#then - restored Sol entry applied after the consolidated Kimi rung
-    expect(second.message["model"]).toMatchObject({ providerID: "openai", modelID: "gpt-5.6-sol" })
+    expect(second.message["model"]).toMatchObject({ providerID: "openai", modelID: "gpt-6.1-sol" })
     expect(second.message["variant"]).toBe("medium")
 
     //#when - third retry cycle
-    const third = await triggerRetryCycle("openai", "gpt-5.6-sol")
+    const third = await triggerRetryCycle("openai", "gpt-6.1-sol")
 
-    //#then - fallback continues to GLM after the restored Sol rung
-    expect(third.message["model"]).toMatchObject({ providerID: "zai-coding-plan", modelID: "glm-5.2" })
-    expect(third.message["variant"]).toBeUndefined()
+    //#then - fallback continues to the legacy Sol rung after the native gpt-6.1-sol rung
+    expect(third.message["model"]).toMatchObject({ providerID: "github-copilot", modelID: "gpt-5.6-sol" })
+    expect(third.message["variant"]).toBe("medium")
     expect(abortCalls).toEqual([sessionID, sessionID, sessionID])
     expect(promptCalls).toEqual([sessionID, sessionID, sessionID])
     expect(toastCalls.length).toBeGreaterThanOrEqual(0)

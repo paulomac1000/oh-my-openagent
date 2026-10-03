@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { CATEGORY_MODEL_REQUIREMENTS } from "./model-requirements"
 
 describe("CATEGORY_MODEL_REQUIREMENTS", () => {
-  test("ultrabrain is gpt-5.6-sol max on every rung", () => {
+  test("ultrabrain has native gpt-6.1-sol max primary with legacy/copilot rungs", () => {
     // given
     const ultrabrain = CATEGORY_MODEL_REQUIREMENTS["ultrabrain"]
 
@@ -12,7 +12,12 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     // then
     expect(chain).toEqual([
       {
-        providers: ["openai", "quotio-openai", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "max",
+      },
+      {
+        providers: ["quotio-openai", "vercel"],
         model: "gpt-5.6-sol",
         variant: "max",
       },
@@ -22,30 +27,35 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
         variant: "max",
       },
       {
-        providers: ["openai", "opencode", "vercel"],
+        providers: ["opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "max",
       },
     ])
   })
 
-  test("deep is a single sol-family medium rung", () => {
+  test("deep has native gpt-6.1-sol medium primary with legacy sol rung", () => {
     // given
     const deep = CATEGORY_MODEL_REQUIREMENTS["deep"]
 
     // when
-    const [primary] = deep.fallbackChain
+    const [primary, legacy] = deep.fallbackChain
 
     // then
-    expect(deep.fallbackChain).toHaveLength(1)
+    expect(deep.fallbackChain).toHaveLength(2)
     expect(primary).toEqual({
-      providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+      providers: ["openai"],
+      model: "gpt-6.1-sol",
+      variant: "medium",
+    })
+    expect(legacy).toEqual({
+      providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
       model: "gpt-5.6-sol",
       variant: "medium",
     })
   })
 
-  test("visual-engineering follows the approved 4-rung chain", () => {
+  test("visual-engineering follows the approved 5-rung chain", () => {
     // given
     const visualEngineering = CATEGORY_MODEL_REQUIREMENTS["visual-engineering"]
 
@@ -70,7 +80,12 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
         variant: "max",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "medium",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "medium",
       },
@@ -109,7 +124,7 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     ])
   })
 
-  test("unspecified-low follows the approved 5-rung chain", () => {
+  test("unspecified-low follows the approved 6-rung chain", () => {
     // given
     const unspecifiedLow = CATEGORY_MODEL_REQUIREMENTS["unspecified-low"]
 
@@ -119,7 +134,12 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     // then
     expect(chain).toEqual([
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-terra",
         variant: "high",
       },
@@ -146,7 +166,7 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
     ])
   })
 
-  test("unspecified-high follows the approved 3-rung chain", () => {
+  test("unspecified-high follows the approved 4-rung chain", () => {
     // given
     const unspecifiedHigh = CATEGORY_MODEL_REQUIREMENTS["unspecified-high"]
 
@@ -166,7 +186,12 @@ describe("CATEGORY_MODEL_REQUIREMENTS", () => {
         variant: "xhigh",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "high",
       },

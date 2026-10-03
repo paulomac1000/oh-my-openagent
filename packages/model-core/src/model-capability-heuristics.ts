@@ -46,6 +46,30 @@ export const HEURISTIC_MODEL_FAMILY_REGISTRY: ReadonlyArray<HeuristicModelFamily
     reasoningEfforts: ["none", "minimal", "low", "medium", "high", "xhigh", "max"],
   },
   {
+    family: "gpt-6.1-sol",
+    includes: ["gpt-6-1-sol"],
+    variants: ["low", "medium", "high", "xhigh"],
+    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
+  },
+  {
+    family: "gpt-6-sol",
+    includes: ["gpt-6-sol"],
+    variants: ["low", "medium", "high", "xhigh"],
+    reasoningEfforts: ["none", "low", "medium", "high", "xhigh", "max"],
+  },
+  {
+    family: "gpt-6-luna",
+    includes: ["gpt-6-luna"],
+    variants: ["low", "medium", "high", "xhigh"],
+    reasoningEfforts: ["none", "low", "medium", "high", "xhigh", "max"],
+  },
+  {
+    family: "gpt-6",
+    includes: ["gpt-6"],
+    variants: ["low", "medium", "high", "xhigh"],
+    reasoningEfforts: ["none", "minimal", "low", "medium", "high", "xhigh", "max"],
+  },
+  {
     family: "gpt-legacy",
     includes: ["gpt"],
     variants: ["low", "medium", "high"],

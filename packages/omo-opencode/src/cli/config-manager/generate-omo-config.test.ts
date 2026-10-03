@@ -118,12 +118,12 @@ describe("generateOmoConfig - model fallback system", () => {
     //#then
     const agents = result.agents as Record<string, { model: string; variant?: string }>
     expect(agents.sisyphus).toEqual({
-      model: "openai/gpt-5.6-sol",
+      model: "openai/gpt-6.1-sol",
       variant: "medium",
     })
-    expect(agents.oracle.model).toBe("openai/gpt-5.6-sol")
+    expect(agents.oracle.model).toBe("openai/gpt-6.1-sol")
     expect(agents["multimodal-looker"]).toMatchObject({
-      model: "openai/gpt-5.6-sol",
+      model: "openai/gpt-6.1-sol",
       variant: "low",
     })
   })
@@ -165,11 +165,11 @@ describe("generateOmoConfig - model fallback system", () => {
     expect(agents.sisyphus.model).toBe("anthropic/claude-opus-5")
     expect(agents.sisyphus.fallback_models).toEqual([
       {
-        model: "openai/gpt-5.6-sol",
+        model: "openai/gpt-6.1-sol",
         variant: "medium",
       },
     ])
-    expect(categories.deep.model).toBe("openai/gpt-5.6-sol")
+    expect(categories.deep.model).toBe("openai/gpt-6.1-sol")
     expect(categories.deep.variant).toBe("medium")
     expect(categories.deep.fallback_models).toBeUndefined()
   })

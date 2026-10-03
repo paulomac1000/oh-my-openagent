@@ -238,6 +238,7 @@ function main(): void {
 	let cleanRoom = false;
 	if (!skipBuild) {
 		buildRoot = join(outDir, ".build-root");
+		spawnSync("git", ["worktree", "prune"], { cwd: repoRoot });
 		rmSync(buildRoot, { recursive: true, force: true });
 		exec("git", ["worktree", "add", "--detach", buildRoot, sourceSha], repoRoot);
 		cleanRoom = true;
@@ -246,7 +247,10 @@ function main(): void {
 		exec("bun", ["run", "build:lsp-tools-mcp"], buildRoot);
 		exec("bun", ["run", "build:lsp-daemon"], buildRoot);
 	}	if (!existsSync(join(buildRoot, "dist/index.js"))) fail("BUILD_OUTPUT_MISSING", "dist/index.js");
-	if (!skipBuild && !existsSync(join(buildRoot, "packages/lsp-daemon/dist/cli.js"))) fail("BUILD_OUTPUT_MISSING", "packages/lsp-daemon/dist/cli.js");
+	if (!skipBuild) {
+		if (!existsSync(join(buildRoot, "packages/lsp-daemon/dist/cli.js"))) fail("BUILD_OUTPUT_MISSING", "packages/lsp-daemon/dist/cli.js");
+		if (!existsSync(join(buildRoot, "packages/lsp-tools-mcp/dist/cli.js"))) fail("BUILD_OUTPUT_MISSING", "packages/lsp-tools-mcp/dist/cli.js");
+	}
 
 	const stagingRoot = join(outDir, ".staging", "package");
 	rmSync(join(outDir, ".staging"), { recursive: true, force: true });

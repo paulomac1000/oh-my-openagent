@@ -252,3 +252,24 @@ describe("GPT-6.1 reasoning compatibility", () => {
     }
   })
 })
+
+describe("GPT-6 reasoning-effort heuristics", () => {
+  test("model-specific heuristic families exclude unsupported efforts", async () => {
+    // given
+    const { detectHeuristicModelFamily } = await import("./model-capability-heuristics")
+
+    // when / then: 6.1-sol never exposes none/minimal (dot and hyphen forms)
+    for (const model of ["openai/gpt-6.1-sol", "gpt-6-1-sol", "gpt-6-1-sol-fast"]) {
+      const family = detectHeuristicModelFamily(model)
+      expect(family?.reasoningEfforts).not.toContain("none")
+      expect(family?.reasoningEfforts).not.toContain("minimal")
+      expect(family?.reasoningEfforts).toContain("xhigh")
+    }
+    // sol 6.0 and luna support none but not minimal
+    for (const model of ["openai/gpt-6-sol", "openai/gpt-6-luna"]) {
+      const family = detectHeuristicModelFamily(model)
+      expect(family?.reasoningEfforts).toContain("none")
+      expect(family?.reasoningEfforts).not.toContain("minimal")
+    }
+  })
+})

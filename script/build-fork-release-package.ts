@@ -104,10 +104,18 @@ function scanStagedForSecrets(stagingRoot: string): void {
 function collectBareImports(file: string): string[] {
 	const text = readFileSync(file, "utf8");
 	const imports = new Set<string>();
-	for (const match of text.matchAll(/(?:from|import)\s*["']([^"']+)["']/g)) {
-		const specifier = match[1];
-		if (BARE_IMPORT_EXCLUDE.test(specifier)) continue;
-		imports.add(specifier.split("/")[0].startsWith("@") ? specifier.split("/").slice(0, 2).join("/") : specifier.split("/")[0]);
+	const patterns = [
+		/^import\s[^;]*?from\s*["']([^"']+)["']/gm,
+		/^export\s[^;]*?from\s*["']([^"']+)["']/gm,
+		/^import\s*["']([^"']+)["']/gm,
+		/\bimport\(\s*["']([^"']+)["']\s*\)/g,
+	];
+	for (const pattern of patterns) {
+		for (const match of text.matchAll(pattern)) {
+			const specifier = match[1];
+			if (BARE_IMPORT_EXCLUDE.test(specifier)) continue;
+			imports.add(specifier.split("/")[0].startsWith("@") ? specifier.split("/").slice(0, 2).join("/") : specifier.split("/")[0]);
+		}
 	}
 	return [...imports];
 }

@@ -235,20 +235,17 @@ function main(): void {
 	assertReleaseTag(releaseTag, baseVersion);
 
 	let buildRoot = repoRoot;
+	let cleanRoom = false;
 	if (!skipBuild) {
 		buildRoot = join(outDir, ".build-root");
 		rmSync(buildRoot, { recursive: true, force: true });
-		mkdirSync(buildRoot, { recursive: true });
-		const archive = spawnSync("git", ["archive", sourceSha], { cwd: repoRoot, encoding: "buffer", maxBuffer: 1024 * 1024 * 512 });
-		if (archive.status !== 0) fail("GIT_ARCHIVE_FAILED", archive.stderr?.toString() ?? "");
-		spawnSync("tar", ["-xf", "-", "-C", buildRoot], { input: archive.stdout });
-		if (!existsSync(join(buildRoot, "package.json"))) fail("GIT_ARCHIVE_INCOMPLETE", buildRoot);
+		exec("git", ["worktree", "add", "--detach", buildRoot, sourceSha], repoRoot);
+		cleanRoom = true;
 		exec("bun", ["install", "--frozen-lockfile"], buildRoot);
 		exec("bun", ["run", "build"], buildRoot);
 		exec("bun", ["run", "build:lsp-tools-mcp"], buildRoot);
 		exec("bun", ["run", "build:lsp-daemon"], buildRoot);
-	}
-	if (!existsSync(join(buildRoot, "dist/index.js"))) fail("BUILD_OUTPUT_MISSING", "dist/index.js");
+	}	if (!existsSync(join(buildRoot, "dist/index.js"))) fail("BUILD_OUTPUT_MISSING", "dist/index.js");
 	if (!skipBuild && !existsSync(join(buildRoot, "packages/lsp-daemon/dist/cli.js"))) fail("BUILD_OUTPUT_MISSING", "packages/lsp-daemon/dist/cli.js");
 
 	const stagingRoot = join(outDir, ".staging", "package");
@@ -301,6 +298,10 @@ function main(): void {
 		`${artifactSha256}  ${ARTIFACT_NAME_PREFIX}-${releaseTag}.tgz\n${manifestSha256}  release-manifest.json\n`,
 	);
 	rmSync(join(outDir, ".staging"), { recursive: true, force: true });
+	if (cleanRoom) {
+		exec("git", ["worktree", "remove", "--force", buildRoot], repoRoot);
+		exec("git", ["worktree", "prune"], repoRoot);
+	}
 	console.log(`PACKAGED tag=${releaseTag} source=${sourceSha} artifact=${artifactPath} sha256=${artifactSha256}`);
 }
 

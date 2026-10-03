@@ -239,8 +239,7 @@ function main(): void {
 		buildRoot = join(outDir, ".build-root");
 		rmSync(buildRoot, { recursive: true, force: true });
 		mkdirSync(buildRoot, { recursive: true });
-		exec("git", ["archive", sourceSha], repoRoot);
-		const archive = spawnSync("git", ["archive", sourceSha], { cwd: repoRoot, encoding: "buffer" });
+		const archive = spawnSync("git", ["archive", sourceSha], { cwd: repoRoot, encoding: "buffer", maxBuffer: 1024 * 1024 * 512 });
 		if (archive.status !== 0) fail("GIT_ARCHIVE_FAILED", archive.stderr?.toString() ?? "");
 		spawnSync("tar", ["-xf", "-", "-C", buildRoot], { input: archive.stdout });
 		if (!existsSync(join(buildRoot, "package.json"))) fail("GIT_ARCHIVE_INCOMPLETE", buildRoot);

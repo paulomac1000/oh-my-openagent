@@ -67,6 +67,15 @@ const HIGH_VARIANT_MAP: Record<string, string> = {
   "gpt-5-4": "gpt-5-4-high",
   "gpt-5-4-chat-latest": "gpt-5-4-chat-latest-high",
   "gpt-5-4-pro": "gpt-5-4-pro-high",
+  // GPT-6
+  "gpt-6": "gpt-6-high",
+  "gpt-6-luna": "gpt-6-luna-high",
+  "gpt-6-luna-fast": "gpt-6-luna-fast-high",
+  "gpt-6-sol": "gpt-6-sol-high",
+  "gpt-6-sol-fast": "gpt-6-sol-fast-high",
+  "gpt-6-1-sol": "gpt-6-1-sol-high",
+  "gpt-6-1-sol-fast": "gpt-6-1-sol-fast-high",
+  "gpt-6-astra": "gpt-6-astra-high",
   // Antigravity (Google)
   "antigravity-gemini-3-1-pro": "antigravity-gemini-3-1-pro-high",
   "antigravity-gemini-3-flash": "antigravity-gemini-3-flash-high",

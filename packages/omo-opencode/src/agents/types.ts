@@ -144,6 +144,12 @@ export function isGpt5_6Model(model: string): boolean {
   return modelName.includes("gpt-5.6") || modelName.includes("gpt-5-6");
 }
 
+/** Matches the GPT-6 family: gpt-6, gpt-6-luna, gpt-6-sol, gpt-6.1-sol, gpt-6-astra. */
+export function isGpt6Model(model: string): boolean {
+  const modelName = extractModelName(model).toLowerCase();
+  return modelName.includes("gpt-6");
+}
+
 export type BuiltinAgentName =
   | "sisyphus"
   | "hephaestus"

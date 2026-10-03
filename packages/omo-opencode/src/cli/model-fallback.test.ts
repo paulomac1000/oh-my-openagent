@@ -178,7 +178,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then explore should use native OpenAI mini-fast (primary model)
-      expect(result.agents?.explore?.model).toBe("openai/gpt-5.6-luna-fast")
+      expect(result.agents?.explore?.model).toBe("openai/gpt-6-luna")
       expect(result.agents?.explore?.variant).toBe("low")
     })
 
@@ -234,7 +234,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.sisyphus?.model).toBe("anthropic/claude-opus-5")
     })
 
-    test("Sisyphus resolves to gpt-5.6-sol medium when only OpenAI is available", () => {
+    test("Sisyphus resolves to gpt-6.1-sol medium when only OpenAI is available", () => {
       // given
       const config = createConfig({ hasOpenAI: true })
 
@@ -243,14 +243,14 @@ describe("generateModelConfig", () => {
 
       // then
       expect(result.agents?.sisyphus).toEqual({
-        model: "openai/gpt-5.6-sol",
+        model: "openai/gpt-6.1-sol",
         variant: "medium",
       })
     })
   })
 
   describe("OpenAI fallback coverage", () => {
-    test("Atlas resolves to gpt-5.6-sol medium when only OpenAI is available", () => {
+    test("Atlas resolves to gpt-6.1-sol medium when only OpenAI is available", () => {
       // given
       const config = createConfig({ hasOpenAI: true })
 
@@ -259,7 +259,7 @@ describe("generateModelConfig", () => {
 
       // then
       expect(result.agents?.atlas).toEqual({
-        model: "openai/gpt-5.6-sol",
+        model: "openai/gpt-6.1-sol",
         variant: "medium",
       })
     })
@@ -276,7 +276,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.metis?.variant).toBeUndefined()
     })
 
-    test("Sisyphus-Junior resolves to gpt-5.6-sol medium when only OpenAI is available", () => {
+    test("Sisyphus-Junior resolves to gpt-6.1-sol medium when only OpenAI is available", () => {
       // given
       const config = createConfig({ hasOpenAI: true })
 
@@ -285,14 +285,14 @@ describe("generateModelConfig", () => {
 
       // then
       expect(result.agents?.["sisyphus-junior"]).toEqual({
-        model: "openai/gpt-5.6-sol",
+        model: "openai/gpt-6.1-sol",
         variant: "medium",
       })
     })
   })
 
   describe("Momus agent model resolution", () => {
-    test("Momus resolves to gpt-5.6-terra high when OpenAI is available", () => {
+    test("Momus resolves to gpt-6-sol high when OpenAI is available", () => {
       // #given
       const config = createConfig({ hasOpenAI: true })
 
@@ -300,10 +300,10 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.momus?.model).toBe("openai/gpt-5.6-terra")
+      expect(result.agents?.momus?.model).toBe("openai/gpt-6-sol")
       expect(result.agents?.momus?.variant).toBe("high")
       expect(result.agents?.momus?.fallback_models?.[0]).toEqual({
-        model: "openai/gpt-5.6-sol",
+        model: "openai/gpt-6.1-sol",
         variant: "xhigh",
       })
     })

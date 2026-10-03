@@ -1,4 +1,4 @@
-import { isGpt5_5Model, isGpt5_6Model } from "../../agents/types"
+import { isGpt5_5Model, isGpt5_6Model, isGpt6Model } from "../../agents/types"
 import type { BuiltinCategoryDefinition } from "./builtin-category-definition"
 
 const ULTRABRAIN_CATEGORY_PROMPT_APPEND = `<Category_Context>
@@ -67,7 +67,7 @@ The orchestrator chose this category because the task benefits from depth over s
 </Category_Context>`
 
 export function resolveDeepCategoryPromptAppend(model: string | undefined): string {
-  if (model && (isGpt5_5Model(model) || isGpt5_6Model(model))) {
+  if (model && (isGpt5_5Model(model) || isGpt5_6Model(model) || isGpt6Model(model))) {
     return DEEP_CATEGORY_PROMPT_APPEND_GPT_5_5
   }
   return DEEP_CATEGORY_PROMPT_APPEND
@@ -89,7 +89,7 @@ Approach:
 </Category_Context>
 
 <Caller_Warning>
-THIS CATEGORY USES A SMALLER/FASTER MODEL (gpt-5.6-luna-fast).
+THIS CATEGORY USES A SMALLER/FASTER MODEL (gpt-6-luna).
 
 The model executing this task is optimized for speed over depth. Your prompt MUST be:
 
@@ -139,7 +139,7 @@ This is NOT a default choice - it's for genuinely unclassifiable moderate-effort
 </Category_Context>
 
 <Caller_Warning>
-THIS CATEGORY USES A LIGHTWEIGHT MODEL (gpt-5.6-luna).
+THIS CATEGORY USES A LIGHTWEIGHT MODEL (gpt-6-luna).
 
 **PROVIDE CLEAR STRUCTURE:**
 1. MUST DO: Enumerate required actions explicitly
@@ -150,17 +150,17 @@ THIS CATEGORY USES A LIGHTWEIGHT MODEL (gpt-5.6-luna).
 export const OPENAI_CATEGORIES: BuiltinCategoryDefinition[] = [
   {
     name: "ultrabrain",
-    config: { model: "openai/gpt-5.6-sol", variant: "xhigh" },
+    config: { model: "openai/gpt-6.1-sol", variant: "xhigh" },
     description: "Use ONLY for genuinely hard, logic-heavy tasks. Give clear goals only, not step-by-step instructions.",
     promptAppend: ULTRABRAIN_CATEGORY_PROMPT_APPEND,
   },
   {
     name: "deep",
-    config: { model: "openai/gpt-5.6-sol", variant: "medium" },
+    config: { model: "openai/gpt-6.1-sol", variant: "medium" },
     description: "Goal-oriented autonomous problem-solving on hairy problems requiring deep research. ONE goal + ONE deliverable per call — multiple goals must fan out as parallel `deep` calls, never bundled into one.",
     promptAppend: DEEP_CATEGORY_PROMPT_APPEND,
     resolvePromptAppend: resolveDeepCategoryPromptAppend,
-    requiresModel: "gpt-5.6-sol",
+    requiresModel: "gpt-6.1-sol",
   },
   {
     name: "quick",
@@ -170,7 +170,7 @@ export const OPENAI_CATEGORIES: BuiltinCategoryDefinition[] = [
   },
   {
     name: "unspecified-low",
-    config: { model: "openai/gpt-5.6-luna", variant: "xhigh" },
+    config: { model: "openai/gpt-6-luna", variant: "xhigh" },
     description: "Tasks that don't fit other categories, low effort required",
     promptAppend: UNSPECIFIED_LOW_CATEGORY_PROMPT_APPEND,
   },

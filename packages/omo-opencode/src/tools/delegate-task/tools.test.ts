@@ -35,8 +35,8 @@ const TEST_AVAILABLE_MODELS = new Set([
   "anthropic/claude-haiku-4-5",
   "google/gemini-3.1-pro",
   "google/gemini-3-flash",
-  "openai/gpt-5.6-luna-fast",
-  "openai/gpt-5.6-sol",
+  "openai/gpt-6-luna",
+  "openai/gpt-6.1-sol",
   "kimi-for-coding/kimi-for-coding-highspeed",
   "openai/gpt-5.5",
 ])
@@ -142,7 +142,7 @@ describe("sisyphus-task", () => {
       models: {
         anthropic: ["claude-opus-4-7", "claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5"],
         google: ["gemini-3.1-pro", "gemini-3-flash"], "kimi-for-coding": ["k3", "kimi-for-coding-highspeed"],
-        openai: ["gpt-5.6-sol", "gpt-5.5", "gpt-5.6-luna-fast", "gpt-5.5"],
+        openai: ["gpt-6.1-sol", "gpt-5.6-sol", "gpt-6-luna", "gpt-5.5"],
       },
       connected: ["anthropic", "google", "openai", "kimi-for-coding"],
       updatedAt: "2026-01-01T00:00:00.000Z",
@@ -173,7 +173,7 @@ describe("sisyphus-task", () => {
 
       // when / #then
       expect(category).toBeDefined()
-      expect(category.model).toBe("openai/gpt-5.6-sol")
+      expect(category.model).toBe("openai/gpt-6.1-sol")
       expect(category.variant).toBe("xhigh")
     })
 
@@ -183,7 +183,7 @@ describe("sisyphus-task", () => {
 
       // when / #then
       expect(category).toBeDefined()
-      expect(category.model).toBe("openai/gpt-5.6-sol")
+      expect(category.model).toBe("openai/gpt-6.1-sol")
       expect(category.variant).toBe("medium")
     })
 
@@ -869,7 +869,7 @@ describe("sisyphus-task", () => {
       expect(result?.model).toBe("anthropic/claude-fable-5")
     })
 
-    test("returns null for deep when gpt-5.6-sol is unavailable and no user config overrides it", () => {
+    test("returns null for deep when gpt-6.1-sol is unavailable and no user config overrides it", () => {
       // #given
       const categoryName = "deep"
       const availableModels = new Set<string>(["anthropic/claude-opus-4-7"])
@@ -884,10 +884,10 @@ describe("sisyphus-task", () => {
       expect(result).toBeNull()
     })
 
-    test("resolves deep at gpt-5.6-sol medium when the gate model is available", () => {
+    test("resolves deep at gpt-6.1-sol medium when the gate model is available", () => {
       // #given
       const categoryName = "deep"
-      const availableModels = new Set<string>(["openai/gpt-5.6-sol"])
+      const availableModels = new Set<string>(["openai/gpt-6.1-sol"])
 
       // #when
       const result = resolveCategoryConfig(categoryName, {
@@ -897,7 +897,7 @@ describe("sisyphus-task", () => {
 
       // #then
       const resolved = expectResolvedCategoryConfig(result)
-      expect(resolved.config.model).toBe("openai/gpt-5.6-sol")
+      expect(resolved.config.model).toBe("openai/gpt-6.1-sol")
       expect(resolved.config.variant).toBe("medium")
     })
 
@@ -3805,7 +3805,7 @@ describe("sisyphus-task", () => {
       
       // then - catalog model is used
       const category = expectResolvedCategoryConfig(resolved)
-      expect(category.config.model).toBe("openai/gpt-5.6-sol")
+      expect(category.config.model).toBe("openai/gpt-6.1-sol")
       expect(category.config.variant).toBe("xhigh")
     })
 
@@ -3818,7 +3818,7 @@ describe("sisyphus-task", () => {
       
       // then - default model from DEFAULT_CATEGORIES is used
       const category = expectResolvedCategoryConfig(resolved)
-      expect(category.config.model).toBe("openai/gpt-5.6-luna")
+      expect(category.config.model).toBe("openai/gpt-6-luna")
       expect(category.config.variant).toBe("xhigh")
     })
 
@@ -3830,10 +3830,10 @@ describe("sisyphus-task", () => {
       // when
       const resolved = resolveCategoryConfig(categoryName, { inheritedModel, systemDefaultModel: SYSTEM_DEFAULT_MODEL })
       
-      // then - category's built-in model wins (ultrabrain uses gpt-5.6-sol)
+      // then - category's built-in model wins (ultrabrain uses gpt-6.1-sol)
       const category = expectResolvedCategoryConfig(resolved)
       const actualModel = category.config.model
-      expect(actualModel).toBe("openai/gpt-5.6-sol")
+      expect(actualModel).toBe("openai/gpt-6.1-sol")
     })
 
     test("when user defines model - modelInfo should report user-defined regardless of inheritedModel", () => {
@@ -3887,12 +3887,12 @@ describe("sisyphus-task", () => {
       const categoryName = "ultrabrain"
       const inheritedModel = "anthropic/claude-opus-4-7"
       
-      // when category has a built-in model (gpt-5.6-sol for ultrabrain)
+      // when category has a built-in model (gpt-6.1-sol for ultrabrain)
       const resolved = resolveCategoryConfig(categoryName, { inheritedModel, systemDefaultModel: SYSTEM_DEFAULT_MODEL })
       
       // then category's built-in model should be used, NOT inheritedModel
       const category = expectResolvedCategoryConfig(resolved)
-      expect(category.model).toBe("openai/gpt-5.6-sol")
+      expect(category.model).toBe("openai/gpt-6.1-sol")
     })
 
     test("FIXED: systemDefaultModel is used when no userConfig.model and no inheritedModel", () => {
@@ -4468,11 +4468,11 @@ describe("sisyphus-task", () => {
       )
 
       // then - should resolve via AGENT_MODEL_REQUIREMENTS fallback chain for oracle
-      // oracle fallback chain: gpt-5.6-sol (openai) > gemini-3.1-pro (google) > claude-opus-4-8 (anthropic)
-      // Since openai is in connectedProviders, should resolve to openai/gpt-5.6-sol at xhigh
+      // oracle fallback chain: gpt-6.1-sol (openai) > gpt-5.6-sol (opencode/vercel) > gemini-3.1-pro (google)
+      // Since openai is in connectedProviders, should resolve to openai/gpt-6.1-sol at xhigh
       expect(promptBody.model).toBeDefined()
       expect(promptBody.model.providerID).toBe("openai")
-      expect(promptBody.model.modelID).toBe("gpt-5.6-sol")
+      expect(promptBody.model.modelID).toBe("gpt-6.1-sol")
       expect(promptBody.variant).toBe("xhigh")
     }, { timeout: 20000 })
   })

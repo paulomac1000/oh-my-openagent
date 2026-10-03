@@ -22,7 +22,7 @@ import type {
 } from "./types"
 
 const MODEL_ID_OVERRIDES: Record<string, ModelCapabilityOverride> = {}
-const GITHUB_COPILOT_GPT5_MODEL = /(?:^|\/)gpt-5(?:[.-]|$)/
+const GITHUB_COPILOT_GPT_MODEL = /(?:^|\/)gpt-[56](?:[.-]|$)/
 const GITHUB_COPILOT_GPT5_OVERRIDE: ModelCapabilityOverride = {
 	variants: ["low", "medium", "high"],
 	reasoningEfforts: ["none", "minimal", "low", "medium", "high"],
@@ -38,7 +38,7 @@ function getOverride(modelID: string): ModelCapabilityOverride | undefined {
 
 function getProviderOverride(providerID: string, modelID: string): ModelCapabilityOverride | undefined {
 	if (providerID.trim().toLowerCase() !== "github-copilot") return undefined
-	return GITHUB_COPILOT_GPT5_MODEL.test(normalizeLookupModelID(modelID))
+	return GITHUB_COPILOT_GPT_MODEL.test(normalizeLookupModelID(modelID))
 		? GITHUB_COPILOT_GPT5_OVERRIDE
 		: undefined
 }

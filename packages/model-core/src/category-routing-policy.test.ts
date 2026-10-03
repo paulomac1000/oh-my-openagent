@@ -3,7 +3,7 @@ import { describe, expect, test } from "bun:test"
 import { CATEGORY_MODEL_REQUIREMENTS } from "./model-requirements"
 
 describe("category routing policy", () => {
-  test("visual-engineering prioritizes Opus max, Kimi K3 max, GLM 5.2 max, then Sol medium", () => {
+  test("visual-engineering prioritizes Opus max, Kimi K3 max, GLM 5.2 max, then native gpt-6.1-sol and legacy Sol medium", () => {
     // given
     const visual = CATEGORY_MODEL_REQUIREMENTS["visual-engineering"]
 
@@ -28,14 +28,19 @@ describe("category routing policy", () => {
         variant: "max",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "medium",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "medium",
       },
     ])
   })
 
-  test("deep is limited to a single sol-family medium rung", () => {
+  test("deep has native gpt-6.1-sol medium primary then the legacy sol-family rung", () => {
     // given
     const deep = CATEGORY_MODEL_REQUIREMENTS["deep"]
 
@@ -45,7 +50,12 @@ describe("category routing policy", () => {
     // then
     expect(chain).toEqual([
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "medium",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "medium",
       },
@@ -84,7 +94,7 @@ describe("category routing policy", () => {
     ])
   })
 
-  test("unspecified-low follows the approved 5-rung chain", () => {
+  test("unspecified-low follows the approved 6-rung chain", () => {
     // given
     const unspecifiedLow = CATEGORY_MODEL_REQUIREMENTS["unspecified-low"]
 
@@ -94,7 +104,12 @@ describe("category routing policy", () => {
     // then
     expect(chain).toEqual([
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-terra",
         variant: "high",
       },
@@ -145,7 +160,12 @@ describe("category routing policy", () => {
         variant: "xhigh",
       },
       {
-        providers: ["openai", "quotio-openai", "github-copilot", "opencode", "vercel"],
+        providers: ["openai"],
+        model: "gpt-6.1-sol",
+        variant: "high",
+      },
+      {
+        providers: ["quotio-openai", "github-copilot", "opencode", "vercel"],
         model: "gpt-5.6-sol",
         variant: "high",
       },

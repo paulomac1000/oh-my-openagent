@@ -79,6 +79,7 @@ export function resolveFallbackAgentName(params: {
 }): string | undefined {
   if (params.currentAgent) return params.currentAgent;
   if (params.sessionID !== params.mainSessionID) return undefined;
-  if (params.message.toLowerCase().includes("gpt-5")) return "hephaestus";
+  if (params.message.toLowerCase().includes("gpt-5") || params.message.toLowerCase().includes("gpt-6"))
+    return "hephaestus";
   return "sisyphus";
 }

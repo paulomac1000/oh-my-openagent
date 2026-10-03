@@ -239,7 +239,10 @@ function main(): void {
 	if (!skipBuild) {
 		buildRoot = join(outDir, ".build-root");
 		spawnSync("git", ["worktree", "prune"], { cwd: repoRoot });
-		rmSync(buildRoot, { recursive: true, force: true });
+		if (existsSync(buildRoot)) {
+			spawnSync("chmod", ["-R", "u+rwX", buildRoot]);
+			rmSync(buildRoot, { recursive: true, force: true });
+		}
 		exec("git", ["worktree", "add", "--detach", buildRoot, sourceSha], repoRoot);
 		cleanRoom = true;
 		exec("bun", ["install", "--frozen-lockfile"], buildRoot);

@@ -74,6 +74,16 @@ describe("fork release packager", () => {
 		expect(result.stderr).toContain("TAG_VERSION_MISMATCH");
 	});
 
+	test("legitimate tool filenames are not secret-like", () => {
+		const repo = makeMiniRepo();
+		mkdirSync(join(repo, "dist/tools"), { recursive: true });
+		writeFileSync(join(repo, "dist/tools/token-limiter.d.ts"), "export declare const limit: number;\n");
+		git(["add", "-A"], repo);
+		git(["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "base"], repo);
+		const result = runPackager(repo, ["--repo-root", repo, "--release-tag", "v5.0.0-beta.5-pm.1", "--out-dir", makeTmp("out-"), "--skip-build"]);
+		expect(result.code).toBe(0);
+	});
+
 	test("rejects untracked secret-like files outside ignore paths", () => {
 		const repo = makeMiniRepo();
 		git(["add", "-A"], repo);

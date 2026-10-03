@@ -18,15 +18,16 @@ const FORK_REPO = "paulomac1000/oh-my-openagent";
 const ARTIFACT_NAME_PREFIX = "oh-my-openagent-fork";
 const IGNORED_UNTRACKED_PREFIXES = [".local-ignore/"];
 const SECRET_FILE_PATTERNS = [
-	/\.env($|\.)/i,
+	/(^|\/)\.env($|\.)/i,
 	/\.pem$/i,
 	/id_rsa/i,
-	/auth\.json$/i,
-	/credentials/i,
-	/token/i,
-	/secret/i,
+	/(^|\/)auth\.json$/i,
+	/credential/i,
 	/\.p12$/i,
 	/\.key$/i,
+	/\.token$/i,
+	/(access|refresh|session|api|auth)[-_.]?token/i,
+	/(^|[-_.])secrets?([-_.]|$)/i,
 ];
 const SECRET_CONTENT_PATTERNS: RegExp[] = [
 	/sk-(live|test)-[A-Za-z0-9]{16,}/,

@@ -1,18 +1,4 @@
 #!/usr/bin/env node
-var __defProp = Object.defineProperty;
-var __returnValue = (v) => v;
-function __exportSetter(name, newValue) {
-  this[name] = __returnValue.bind(null, newValue);
-}
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, {
-      get: all[name],
-      enumerable: true,
-      configurable: true,
-      set: __exportSetter.bind(all, name)
-    });
-};
 
 // src/serve.ts
 import { existsSync as existsSync7, realpathSync as realpathSync3 } from "node:fs";
@@ -263,7 +249,7 @@ async function removeEmptyDirectory(path) {
   }
 }
 function sleep(ms) {
-  return new Promise((resolve2) => setTimeout(resolve2, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function defaultDownloader(asset, timeoutMs = DEFAULT_DOWNLOAD_TIMEOUT_MS) {
   const response = await fetch(asset.url, { signal: AbortSignal.timeout(timeoutMs) });
@@ -586,9 +572,9 @@ function resolveCodegraphCommand(options = {}) {
   const which = options.which ?? bunWhich;
   const nodeRuntime = options.nodeRuntime ?? (() => defaultNodeRuntime(env, fileExists, which, options.nodeVersion ?? defaultNodeVersion));
   const bundled = resolveBundledShim(options.requireResolve ?? defaultRequireResolve, fileExists);
-  const runtime2 = nodeRuntime();
-  if (bundled !== null && runtime2 !== null) {
-    return { argsPrefix: [bundled], command: runtime2, exists: true, source: "bundled" };
+  const runtime = nodeRuntime();
+  if (bundled !== null && runtime !== null) {
+    return { argsPrefix: [bundled], command: runtime, exists: true, source: "bundled" };
   }
   const provisioned = options.provisioned?.() ?? defaultProvisionedBin(options.homeDir ?? homedir3(), fileExists);
   if (provisioned !== null && fileExists(provisioned)) {
@@ -705,10 +691,10 @@ function $constructor(name, initializer, params) {
   }
   Object.defineProperty(Definition, "name", { value: name });
   function _(def) {
-    var _a2;
+    var _a;
     const inst = params?.Parent ? new Definition : this;
     init(inst, def);
-    (_a2 = inst._zod).deferred ?? (_a2.deferred = []);
+    (_a = inst._zod).deferred ?? (_a.deferred = []);
     for (const fn of inst._zod.deferred) {
       fn();
     }
@@ -747,90 +733,10 @@ function config(newConfig) {
   return globalConfig;
 }
 // ../../../../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/util.js
-var exports_util = {};
-__export(exports_util, {
-  BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES,
-  Class: () => Class,
-  NUMBER_FORMAT_RANGES: () => NUMBER_FORMAT_RANGES,
-  aborted: () => aborted,
-  allowsEval: () => allowsEval,
-  assert: () => assert,
-  assertEqual: () => assertEqual,
-  assertIs: () => assertIs,
-  assertNever: () => assertNever,
-  assertNotEqual: () => assertNotEqual,
-  assignProp: () => assignProp,
-  base64ToUint8Array: () => base64ToUint8Array,
-  base64urlToUint8Array: () => base64urlToUint8Array,
-  cached: () => cached,
-  captureStackTrace: () => captureStackTrace,
-  cleanEnum: () => cleanEnum,
-  cleanRegex: () => cleanRegex,
-  clone: () => clone,
-  cloneDef: () => cloneDef,
-  createTransparentProxy: () => createTransparentProxy,
-  defineLazy: () => defineLazy,
-  esc: () => esc,
-  escapeRegex: () => escapeRegex,
-  explicitlyAborted: () => explicitlyAborted,
-  extend: () => extend,
-  finalizeIssue: () => finalizeIssue,
-  floatSafeRemainder: () => floatSafeRemainder,
-  getElementAtPath: () => getElementAtPath,
-  getEnumValues: () => getEnumValues,
-  getLengthableOrigin: () => getLengthableOrigin,
-  getParsedType: () => getParsedType,
-  getSizableOrigin: () => getSizableOrigin,
-  hexToUint8Array: () => hexToUint8Array,
-  isObject: () => isObject,
-  isPlainObject: () => isPlainObject,
-  issue: () => issue,
-  joinValues: () => joinValues,
-  jsonStringifyReplacer: () => jsonStringifyReplacer,
-  merge: () => merge,
-  mergeDefs: () => mergeDefs,
-  normalizeParams: () => normalizeParams,
-  nullish: () => nullish,
-  numKeys: () => numKeys,
-  objectClone: () => objectClone,
-  omit: () => omit,
-  optionalKeys: () => optionalKeys,
-  parsedType: () => parsedType,
-  partial: () => partial,
-  pick: () => pick,
-  prefixIssues: () => prefixIssues,
-  primitiveTypes: () => primitiveTypes,
-  promiseAllObject: () => promiseAllObject,
-  propertyKeyTypes: () => propertyKeyTypes,
-  randomString: () => randomString,
-  required: () => required,
-  safeExtend: () => safeExtend,
-  shallowClone: () => shallowClone,
-  slugify: () => slugify,
-  stringifyPrimitive: () => stringifyPrimitive,
-  uint8ArrayToBase64: () => uint8ArrayToBase64,
-  uint8ArrayToBase64url: () => uint8ArrayToBase64url,
-  uint8ArrayToHex: () => uint8ArrayToHex,
-  unwrapMessage: () => unwrapMessage
-});
-function assertEqual(val) {
-  return val;
-}
-function assertNotEqual(val) {
-  return val;
-}
-function assertIs(_arg) {}
-function assertNever(_x) {
-  throw new Error("Unexpected value in exhaustive check");
-}
-function assert(_) {}
 function getEnumValues(entries) {
   const numericValues = Object.values(entries).filter((v) => typeof v === "number");
   const values = Object.entries(entries).filter(([k, _]) => numericValues.indexOf(+k) === -1).map(([_, v]) => v);
   return values;
-}
-function joinValues(array, separator = "|") {
-  return array.map((val) => stringifyPrimitive(val)).join(separator);
 }
 function jsonStringifyReplacer(_, value) {
   if (typeof value === "bigint")
@@ -888,9 +794,6 @@ function defineLazy(object, key, getter) {
     configurable: true
   });
 }
-function objectClone(obj) {
-  return Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
-}
 function assignProp(target, prop, value) {
   Object.defineProperty(target, prop, {
     value,
@@ -906,33 +809,6 @@ function mergeDefs(...defs) {
     Object.assign(mergedDescriptors, descriptors);
   }
   return Object.defineProperties({}, mergedDescriptors);
-}
-function cloneDef(schema) {
-  return mergeDefs(schema._zod.def);
-}
-function getElementAtPath(obj, path) {
-  if (!path)
-    return obj;
-  return path.reduce((acc, key) => acc?.[key], obj);
-}
-function promiseAllObject(promisesObj) {
-  const keys = Object.keys(promisesObj);
-  const promises = keys.map((key) => promisesObj[key]);
-  return Promise.all(promises).then((results) => {
-    const resolvedObj = {};
-    for (let i = 0;i < keys.length; i++) {
-      resolvedObj[keys[i]] = results[i];
-    }
-    return resolvedObj;
-  });
-}
-function randomString(length = 10) {
-  const chars = "abcdefghijklmnopqrstuvwxyz";
-  let str = "";
-  for (let i = 0;i < length; i++) {
-    str += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return str;
 }
 function esc(str) {
   return JSON.stringify(str);
@@ -986,68 +862,7 @@ function shallowClone(o) {
     return new Set(o);
   return o;
 }
-function numKeys(data) {
-  let keyCount = 0;
-  for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key)) {
-      keyCount++;
-    }
-  }
-  return keyCount;
-}
-var getParsedType = (data) => {
-  const t = typeof data;
-  switch (t) {
-    case "undefined":
-      return "undefined";
-    case "string":
-      return "string";
-    case "number":
-      return Number.isNaN(data) ? "nan" : "number";
-    case "boolean":
-      return "boolean";
-    case "function":
-      return "function";
-    case "bigint":
-      return "bigint";
-    case "symbol":
-      return "symbol";
-    case "object":
-      if (Array.isArray(data)) {
-        return "array";
-      }
-      if (data === null) {
-        return "null";
-      }
-      if (data.then && typeof data.then === "function" && data.catch && typeof data.catch === "function") {
-        return "promise";
-      }
-      if (typeof Map !== "undefined" && data instanceof Map) {
-        return "map";
-      }
-      if (typeof Set !== "undefined" && data instanceof Set) {
-        return "set";
-      }
-      if (typeof Date !== "undefined" && data instanceof Date) {
-        return "date";
-      }
-      if (typeof File !== "undefined" && data instanceof File) {
-        return "file";
-      }
-      return "object";
-    default:
-      throw new Error(`Unknown data type: ${t}`);
-  }
-};
 var propertyKeyTypes = /* @__PURE__ */ new Set(["string", "number", "symbol"]);
-var primitiveTypes = /* @__PURE__ */ new Set([
-  "string",
-  "number",
-  "bigint",
-  "boolean",
-  "symbol",
-  "undefined"
-]);
 function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -1073,46 +888,6 @@ function normalizeParams(_params) {
     return { ...params, error: () => params.error };
   return params;
 }
-function createTransparentProxy(getter) {
-  let target;
-  return new Proxy({}, {
-    get(_, prop, receiver) {
-      target ?? (target = getter());
-      return Reflect.get(target, prop, receiver);
-    },
-    set(_, prop, value, receiver) {
-      target ?? (target = getter());
-      return Reflect.set(target, prop, value, receiver);
-    },
-    has(_, prop) {
-      target ?? (target = getter());
-      return Reflect.has(target, prop);
-    },
-    deleteProperty(_, prop) {
-      target ?? (target = getter());
-      return Reflect.deleteProperty(target, prop);
-    },
-    ownKeys(_) {
-      target ?? (target = getter());
-      return Reflect.ownKeys(target);
-    },
-    getOwnPropertyDescriptor(_, prop) {
-      target ?? (target = getter());
-      return Reflect.getOwnPropertyDescriptor(target, prop);
-    },
-    defineProperty(_, prop, descriptor) {
-      target ?? (target = getter());
-      return Reflect.defineProperty(target, prop, descriptor);
-    }
-  });
-}
-function stringifyPrimitive(value) {
-  if (typeof value === "bigint")
-    return value.toString() + "n";
-  if (typeof value === "string")
-    return `"${value}"`;
-  return `${value}`;
-}
 function optionalKeys(shape) {
   return Object.keys(shape).filter((k) => {
     return shape[k]._zod.optin === "optional" && shape[k]._zod.optout === "optional";
@@ -1124,10 +899,6 @@ var NUMBER_FORMAT_RANGES = {
   uint32: [0, 4294967295],
   float32: [-340282346638528860000000000000000000000, 340282346638528860000000000000000000000],
   float64: [-Number.MAX_VALUE, Number.MAX_VALUE]
-};
-var BIGINT_FORMAT_RANGES = {
-  int64: [/* @__PURE__ */ BigInt("-9223372036854775808"), /* @__PURE__ */ BigInt("9223372036854775807")],
-  uint64: [/* @__PURE__ */ BigInt(0), /* @__PURE__ */ BigInt("18446744073709551615")]
 };
 function pick(schema, mask) {
   const currDef = schema._zod.def;
@@ -1323,8 +1094,8 @@ function explicitlyAborted(x, startIndex = 0) {
 }
 function prefixIssues(path, issues) {
   return issues.map((iss) => {
-    var _a2;
-    (_a2 = iss).path ?? (_a2.path = []);
+    var _a;
+    (_a = iss).path ?? (_a.path = []);
     iss.path.unshift(path);
     return iss;
   });
@@ -1332,8 +1103,8 @@ function prefixIssues(path, issues) {
 function unwrapMessage(message) {
   return typeof message === "string" ? message : message?.message;
 }
-function finalizeIssue(iss, ctx, config2) {
-  const message = iss.message ? iss.message : unwrapMessage(iss.inst?._zod.def?.error?.(iss)) ?? unwrapMessage(ctx?.error?.(iss)) ?? unwrapMessage(config2.customError?.(iss)) ?? unwrapMessage(config2.localeError?.(iss)) ?? "Invalid input";
+function finalizeIssue(iss, ctx, config) {
+  const message = iss.message ? iss.message : unwrapMessage(iss.inst?._zod.def?.error?.(iss)) ?? unwrapMessage(ctx?.error?.(iss)) ?? unwrapMessage(config.customError?.(iss)) ?? unwrapMessage(config.localeError?.(iss)) ?? "Invalid input";
   const { inst: _inst, continue: _continue, input: _input, ...rest } = iss;
   rest.path ?? (rest.path = []);
   rest.message = message;
@@ -1342,42 +1113,12 @@ function finalizeIssue(iss, ctx, config2) {
   }
   return rest;
 }
-function getSizableOrigin(input) {
-  if (input instanceof Set)
-    return "set";
-  if (input instanceof Map)
-    return "map";
-  if (input instanceof File)
-    return "file";
-  return "unknown";
-}
 function getLengthableOrigin(input) {
   if (Array.isArray(input))
     return "array";
   if (typeof input === "string")
     return "string";
   return "unknown";
-}
-function parsedType(data) {
-  const t = typeof data;
-  switch (t) {
-    case "number": {
-      return Number.isNaN(data) ? "nan" : "number";
-    }
-    case "object": {
-      if (data === null) {
-        return "null";
-      }
-      if (Array.isArray(data)) {
-        return "array";
-      }
-      const obj = data;
-      if (obj && Object.getPrototypeOf(obj) !== Object.prototype && "constructor" in obj && obj.constructor) {
-        return obj.constructor.name;
-      }
-    }
-  }
-  return t;
 }
 function issue(...args) {
   const [iss, input, inst] = args;
@@ -1390,52 +1131,6 @@ function issue(...args) {
     };
   }
   return { ...iss };
-}
-function cleanEnum(obj) {
-  return Object.entries(obj).filter(([k, _]) => {
-    return Number.isNaN(Number.parseInt(k, 10));
-  }).map((el) => el[1]);
-}
-function base64ToUint8Array(base64) {
-  const binaryString = atob(base64);
-  const bytes = new Uint8Array(binaryString.length);
-  for (let i = 0;i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes;
-}
-function uint8ArrayToBase64(bytes) {
-  let binaryString = "";
-  for (let i = 0;i < bytes.length; i++) {
-    binaryString += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binaryString);
-}
-function base64urlToUint8Array(base64url) {
-  const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
-  const padding = "=".repeat((4 - base64.length % 4) % 4);
-  return base64ToUint8Array(base64 + padding);
-}
-function uint8ArrayToBase64url(bytes) {
-  return uint8ArrayToBase64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
-}
-function hexToUint8Array(hex) {
-  const cleanHex = hex.replace(/^0x/, "");
-  if (cleanHex.length % 2 !== 0) {
-    throw new Error("Invalid hex string length");
-  }
-  const bytes = new Uint8Array(cleanHex.length / 2);
-  for (let i = 0;i < cleanHex.length; i += 2) {
-    bytes[i / 2] = Number.parseInt(cleanHex.slice(i, i + 2), 16);
-  }
-  return bytes;
-}
-function uint8ArrayToHex(bytes) {
-  return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-class Class {
-  constructor(..._args) {}
 }
 
 // ../../../../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/errors.js
@@ -1457,7 +1152,7 @@ var initializer = (inst, def) => {
 };
 var $ZodError = $constructor("$ZodError", initializer);
 var $ZodRealError = $constructor("$ZodError", initializer, { Parent: Error });
-function flattenError(error, mapper = (issue2) => issue2.message) {
+function flattenError(error, mapper = (issue) => issue.message) {
   const fieldErrors = {};
   const formErrors = [];
   for (const sub of error.issues) {
@@ -1470,20 +1165,20 @@ function flattenError(error, mapper = (issue2) => issue2.message) {
   }
   return { formErrors, fieldErrors };
 }
-function formatError(error, mapper = (issue2) => issue2.message) {
+function formatError(error, mapper = (issue) => issue.message) {
   const fieldErrors = { _errors: [] };
-  const processError = (error2, path = []) => {
-    for (const issue2 of error2.issues) {
-      if (issue2.code === "invalid_union" && issue2.errors.length) {
-        issue2.errors.map((issues) => processError({ issues }, [...path, ...issue2.path]));
-      } else if (issue2.code === "invalid_key") {
-        processError({ issues: issue2.issues }, [...path, ...issue2.path]);
-      } else if (issue2.code === "invalid_element") {
-        processError({ issues: issue2.issues }, [...path, ...issue2.path]);
+  const processError = (error, path = []) => {
+    for (const issue of error.issues) {
+      if (issue.code === "invalid_union" && issue.errors.length) {
+        issue.errors.map((issues) => processError({ issues }, [...path, ...issue.path]));
+      } else if (issue.code === "invalid_key") {
+        processError({ issues: issue.issues }, [...path, ...issue.path]);
+      } else if (issue.code === "invalid_element") {
+        processError({ issues: issue.issues }, [...path, ...issue.path]);
       } else {
-        const fullpath = [...path, ...issue2.path];
+        const fullpath = [...path, ...issue.path];
         if (fullpath.length === 0) {
-          fieldErrors._errors.push(mapper(issue2));
+          fieldErrors._errors.push(mapper(issue));
         } else {
           let curr = fieldErrors;
           let i = 0;
@@ -1494,7 +1189,7 @@ function formatError(error, mapper = (issue2) => issue2.message) {
               curr[el] = curr[el] || { _errors: [] };
             } else {
               curr[el] = curr[el] || { _errors: [] };
-              curr[el]._errors.push(mapper(issue2));
+              curr[el]._errors.push(mapper(issue));
             }
             curr = curr[el];
             i++;
@@ -1622,13 +1317,13 @@ function time(args) {
   return new RegExp(`^${timeSource(args)}$`);
 }
 function datetime(args) {
-  const time2 = timeSource({ precision: args.precision });
+  const time = timeSource({ precision: args.precision });
   const opts = ["Z"];
   if (args.local)
     opts.push("");
   if (args.offset)
     opts.push(`([+-](?:[01]\\d|2[0-3]):[0-5]\\d)`);
-  const timeRegex = `${time2}(?:${opts.join("|")})`;
+  const timeRegex = `${time}(?:${opts.join("|")})`;
   return new RegExp(`^${dateSource}T(?:${timeRegex})$`);
 }
 var string = (params) => {
@@ -1643,10 +1338,10 @@ var uppercase = /^[^a-z]*$/;
 
 // ../../../../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/checks.js
 var $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
-  var _a2;
+  var _a;
   inst._zod ?? (inst._zod = {});
   inst._zod.def = def;
-  (_a2 = inst._zod).onattach ?? (_a2.onattach = []);
+  (_a = inst._zod).onattach ?? (_a.onattach = []);
 });
 var numericOriginMap = {
   number: "number",
@@ -1656,8 +1351,8 @@ var numericOriginMap = {
 var $ZodCheckLessThan = /* @__PURE__ */ $constructor("$ZodCheckLessThan", (inst, def) => {
   $ZodCheck.init(inst, def);
   const origin = numericOriginMap[typeof def.value];
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     const curr = (def.inclusive ? bag.maximum : bag.exclusiveMaximum) ?? Number.POSITIVE_INFINITY;
     if (def.value < curr) {
       if (def.inclusive)
@@ -1684,8 +1379,8 @@ var $ZodCheckLessThan = /* @__PURE__ */ $constructor("$ZodCheckLessThan", (inst,
 var $ZodCheckGreaterThan = /* @__PURE__ */ $constructor("$ZodCheckGreaterThan", (inst, def) => {
   $ZodCheck.init(inst, def);
   const origin = numericOriginMap[typeof def.value];
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     const curr = (def.inclusive ? bag.minimum : bag.exclusiveMinimum) ?? Number.NEGATIVE_INFINITY;
     if (def.value > curr) {
       if (def.inclusive)
@@ -1711,9 +1406,9 @@ var $ZodCheckGreaterThan = /* @__PURE__ */ $constructor("$ZodCheckGreaterThan", 
 });
 var $ZodCheckMultipleOf = /* @__PURE__ */ $constructor("$ZodCheckMultipleOf", (inst, def) => {
   $ZodCheck.init(inst, def);
-  inst._zod.onattach.push((inst2) => {
-    var _a2;
-    (_a2 = inst2._zod.bag).multipleOf ?? (_a2.multipleOf = def.value);
+  inst._zod.onattach.push((inst) => {
+    var _a;
+    (_a = inst._zod.bag).multipleOf ?? (_a.multipleOf = def.value);
   });
   inst._zod.check = (payload) => {
     if (typeof payload.value !== typeof def.value)
@@ -1737,8 +1432,8 @@ var $ZodCheckNumberFormat = /* @__PURE__ */ $constructor("$ZodCheckNumberFormat"
   const isInt = def.format?.includes("int");
   const origin = isInt ? "int" : "number";
   const [minimum, maximum] = NUMBER_FORMAT_RANGES[def.format];
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.format = def.format;
     bag.minimum = minimum;
     bag.maximum = maximum;
@@ -1811,16 +1506,16 @@ var $ZodCheckNumberFormat = /* @__PURE__ */ $constructor("$ZodCheckNumberFormat"
   };
 });
 var $ZodCheckMaxLength = /* @__PURE__ */ $constructor("$ZodCheckMaxLength", (inst, def) => {
-  var _a2;
+  var _a;
   $ZodCheck.init(inst, def);
-  (_a2 = inst._zod.def).when ?? (_a2.when = (payload) => {
+  (_a = inst._zod.def).when ?? (_a.when = (payload) => {
     const val = payload.value;
     return !nullish(val) && val.length !== undefined;
   });
-  inst._zod.onattach.push((inst2) => {
-    const curr = inst2._zod.bag.maximum ?? Number.POSITIVE_INFINITY;
+  inst._zod.onattach.push((inst) => {
+    const curr = inst._zod.bag.maximum ?? Number.POSITIVE_INFINITY;
     if (def.maximum < curr)
-      inst2._zod.bag.maximum = def.maximum;
+      inst._zod.bag.maximum = def.maximum;
   });
   inst._zod.check = (payload) => {
     const input = payload.value;
@@ -1840,16 +1535,16 @@ var $ZodCheckMaxLength = /* @__PURE__ */ $constructor("$ZodCheckMaxLength", (ins
   };
 });
 var $ZodCheckMinLength = /* @__PURE__ */ $constructor("$ZodCheckMinLength", (inst, def) => {
-  var _a2;
+  var _a;
   $ZodCheck.init(inst, def);
-  (_a2 = inst._zod.def).when ?? (_a2.when = (payload) => {
+  (_a = inst._zod.def).when ?? (_a.when = (payload) => {
     const val = payload.value;
     return !nullish(val) && val.length !== undefined;
   });
-  inst._zod.onattach.push((inst2) => {
-    const curr = inst2._zod.bag.minimum ?? Number.NEGATIVE_INFINITY;
+  inst._zod.onattach.push((inst) => {
+    const curr = inst._zod.bag.minimum ?? Number.NEGATIVE_INFINITY;
     if (def.minimum > curr)
-      inst2._zod.bag.minimum = def.minimum;
+      inst._zod.bag.minimum = def.minimum;
   });
   inst._zod.check = (payload) => {
     const input = payload.value;
@@ -1869,14 +1564,14 @@ var $ZodCheckMinLength = /* @__PURE__ */ $constructor("$ZodCheckMinLength", (ins
   };
 });
 var $ZodCheckLengthEquals = /* @__PURE__ */ $constructor("$ZodCheckLengthEquals", (inst, def) => {
-  var _a2;
+  var _a;
   $ZodCheck.init(inst, def);
-  (_a2 = inst._zod.def).when ?? (_a2.when = (payload) => {
+  (_a = inst._zod.def).when ?? (_a.when = (payload) => {
     const val = payload.value;
     return !nullish(val) && val.length !== undefined;
   });
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.minimum = def.length;
     bag.maximum = def.length;
     bag.length = def.length;
@@ -1900,10 +1595,10 @@ var $ZodCheckLengthEquals = /* @__PURE__ */ $constructor("$ZodCheckLengthEquals"
   };
 });
 var $ZodCheckStringFormat = /* @__PURE__ */ $constructor("$ZodCheckStringFormat", (inst, def) => {
-  var _a2, _b;
+  var _a, _b;
   $ZodCheck.init(inst, def);
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.format = def.format;
     if (def.pattern) {
       bag.patterns ?? (bag.patterns = new Set);
@@ -1911,7 +1606,7 @@ var $ZodCheckStringFormat = /* @__PURE__ */ $constructor("$ZodCheckStringFormat"
     }
   });
   if (def.pattern)
-    (_a2 = inst._zod).check ?? (_a2.check = (payload) => {
+    (_a = inst._zod).check ?? (_a.check = (payload) => {
       def.pattern.lastIndex = 0;
       if (def.pattern.test(payload.value))
         return;
@@ -1958,8 +1653,8 @@ var $ZodCheckIncludes = /* @__PURE__ */ $constructor("$ZodCheckIncludes", (inst,
   const escapedRegex = escapeRegex(def.includes);
   const pattern = new RegExp(typeof def.position === "number" ? `^.{${def.position}}${escapedRegex}` : escapedRegex);
   def.pattern = pattern;
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.patterns ?? (bag.patterns = new Set);
     bag.patterns.add(pattern);
   });
@@ -1981,8 +1676,8 @@ var $ZodCheckStartsWith = /* @__PURE__ */ $constructor("$ZodCheckStartsWith", (i
   $ZodCheck.init(inst, def);
   const pattern = new RegExp(`^${escapeRegex(def.prefix)}.*`);
   def.pattern ?? (def.pattern = pattern);
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.patterns ?? (bag.patterns = new Set);
     bag.patterns.add(pattern);
   });
@@ -2004,8 +1699,8 @@ var $ZodCheckEndsWith = /* @__PURE__ */ $constructor("$ZodCheckEndsWith", (inst,
   $ZodCheck.init(inst, def);
   const pattern = new RegExp(`.*${escapeRegex(def.suffix)}$`);
   def.pattern ?? (def.pattern = pattern);
-  inst._zod.onattach.push((inst2) => {
-    const bag = inst2._zod.bag;
+  inst._zod.onattach.push((inst) => {
+    const bag = inst._zod.bag;
     bag.patterns ?? (bag.patterns = new Set);
     bag.patterns.add(pattern);
   });
@@ -2077,7 +1772,7 @@ var version = {
 
 // ../../../../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/schemas.js
 var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
-  var _a2;
+  var _a;
   inst ?? (inst = {});
   inst._zod.def = def;
   inst._zod.bag = inst._zod.bag || {};
@@ -2092,15 +1787,15 @@ var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
     }
   }
   if (checks.length === 0) {
-    (_a2 = inst._zod).deferred ?? (_a2.deferred = []);
+    (_a = inst._zod).deferred ?? (_a.deferred = []);
     inst._zod.deferred?.push(() => {
       inst._zod.run = inst._zod.parse;
     });
   } else {
-    const runChecks = (payload, checks2, ctx) => {
+    const runChecks = (payload, checks, ctx) => {
       let isAborted = aborted(payload);
       let asyncResult;
-      for (const ch of checks2) {
+      for (const ch of checks) {
         if (ch._zod.def.when) {
           if (explicitlyAborted(payload))
             continue;
@@ -2148,7 +1843,7 @@ var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
       if (checkResult instanceof Promise) {
         if (ctx.async === false)
           throw new $ZodAsyncError;
-        return checkResult.then((checkResult2) => inst._zod.parse(checkResult2, ctx));
+        return checkResult.then((checkResult) => inst._zod.parse(checkResult, ctx));
       }
       return inst._zod.parse(checkResult, ctx);
     };
@@ -2159,8 +1854,8 @@ var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
       if (ctx.direction === "backward") {
         const canary = inst._zod.parse({ value: payload.value, issues: [] }, { ...ctx, skipChecks: true });
         if (canary instanceof Promise) {
-          return canary.then((canary2) => {
-            return handleCanaryResult(canary2, payload, ctx);
+          return canary.then((canary) => {
+            return handleCanaryResult(canary, payload, ctx);
           });
         }
         return handleCanaryResult(canary, payload, ctx);
@@ -2169,7 +1864,7 @@ var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
       if (result instanceof Promise) {
         if (ctx.async === false)
           throw new $ZodAsyncError;
-        return result.then((result2) => runChecks(result2, checks, ctx));
+        return result.then((result) => runChecks(result, checks, ctx));
       }
       return runChecks(result, checks, ctx);
     };
@@ -2194,7 +1889,7 @@ var $ZodString = /* @__PURE__ */ $constructor("$ZodString", (inst, def) => {
     if (def.coerce)
       try {
         payload.value = String(payload.value);
-      } catch (_2) {}
+      } catch (_) {}
     if (typeof payload.value === "string")
       return payload;
     payload.issues.push({
@@ -2434,8 +2129,8 @@ var $ZodBase64 = /* @__PURE__ */ $constructor("$ZodBase64", (inst, def) => {
 function isValidBase64URL(data) {
   if (!base64url.test(data))
     return false;
-  const base642 = data.replace(/[-_]/g, (c) => c === "-" ? "+" : "/");
-  const padded = base642.padEnd(Math.ceil(base642.length / 4) * 4, "=");
+  const base64 = data.replace(/[-_]/g, (c) => c === "-" ? "+" : "/");
+  const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
   return isValidBase64(padded);
 }
 var $ZodBase64URL = /* @__PURE__ */ $constructor("$ZodBase64URL", (inst, def) => {
@@ -2583,7 +2278,7 @@ var $ZodArray = /* @__PURE__ */ $constructor("$ZodArray", (inst, def) => {
         issues: []
       }, ctx);
       if (result instanceof Promise) {
-        proms.push(result.then((result2) => handleArrayResult(result2, payload, i)));
+        proms.push(result.then((result) => handleArrayResult(result, payload, i)));
       } else {
         handleArrayResult(result, payload, i);
       }
@@ -2655,7 +2350,7 @@ function handleCatchall(proms, input, payload, ctx, def, inst) {
     }
     const r = _catchall.run({ value: input[key], issues: [] }, ctx);
     if (r instanceof Promise) {
-      proms.push(r.then((r2) => handlePropertyResult(r2, payload, key, input, isOptionalIn, isOptionalOut)));
+      proms.push(r.then((r) => handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut)));
     } else {
       handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut);
     }
@@ -2727,7 +2422,7 @@ var $ZodObject = /* @__PURE__ */ $constructor("$ZodObject", (inst, def) => {
       const isOptionalOut = el._zod.optout === "optional";
       const r = el._zod.run({ value: input[key], issues: [] }, ctx);
       if (r instanceof Promise) {
-        proms.push(r.then((r2) => handlePropertyResult(r2, payload, key, input, isOptionalIn, isOptionalOut)));
+        proms.push(r.then((r) => handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut)));
       } else {
         handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut);
       }
@@ -2925,8 +2620,8 @@ var $ZodUnion = /* @__PURE__ */ $constructor("$ZodUnion", (inst, def) => {
     }
     if (!async)
       return handleUnionResults(results, payload, inst, ctx);
-    return Promise.all(results).then((results2) => {
-      return handleUnionResults(results2, payload, inst, ctx);
+    return Promise.all(results).then((results) => {
+      return handleUnionResults(results, payload, inst, ctx);
     });
   };
 });
@@ -3005,8 +2700,8 @@ var $ZodIntersection = /* @__PURE__ */ $constructor("$ZodIntersection", (inst, d
     const right = def.right._zod.run({ value: input, issues: [] }, ctx);
     const async = left instanceof Promise || right instanceof Promise;
     if (async) {
-      return Promise.all([left, right]).then(([left2, right2]) => {
-        return handleIntersectionResults(payload, left2, right2);
+      return Promise.all([left, right]).then(([left, right]) => {
+        return handleIntersectionResults(payload, left, right);
       });
     }
     return handleIntersectionResults(payload, left, right);
@@ -3134,11 +2829,11 @@ var $ZodRecord = /* @__PURE__ */ $constructor("$ZodRecord", (inst, def) => {
           const outKey = keyResult.value;
           const result = def.valueType._zod.run({ value: input[key], issues: [] }, ctx);
           if (result instanceof Promise) {
-            proms.push(result.then((result2) => {
-              if (result2.issues.length) {
-                payload.issues.push(...prefixIssues(key, result2.issues));
+            proms.push(result.then((result) => {
+              if (result.issues.length) {
+                payload.issues.push(...prefixIssues(key, result.issues));
               }
-              payload.value[outKey] = result2.value;
+              payload.value[outKey] = result.value;
             }));
           } else {
             if (result.issues.length) {
@@ -3201,11 +2896,11 @@ var $ZodRecord = /* @__PURE__ */ $constructor("$ZodRecord", (inst, def) => {
         }
         const result = def.valueType._zod.run({ value: input[key], issues: [] }, ctx);
         if (result instanceof Promise) {
-          proms.push(result.then((result2) => {
-            if (result2.issues.length) {
-              payload.issues.push(...prefixIssues(key, result2.issues));
+          proms.push(result.then((result) => {
+            if (result.issues.length) {
+              payload.issues.push(...prefixIssues(key, result.issues));
             }
-            payload.value[keyResult.value] = result2.value;
+            payload.value[keyResult.value] = result.value;
           }));
         } else {
           if (result.issues.length) {
@@ -3273,8 +2968,8 @@ var $ZodTransform = /* @__PURE__ */ $constructor("$ZodTransform", (inst, def) =>
     const _out = def.transform(payload.value, payload);
     if (ctx.async) {
       const output = _out instanceof Promise ? _out : Promise.resolve(_out);
-      return output.then((output2) => {
-        payload.value = output2;
+      return output.then((output) => {
+        payload.value = output;
         payload.fallback = true;
         return payload;
       });
@@ -3357,7 +3052,7 @@ var $ZodDefault = /* @__PURE__ */ $constructor("$ZodDefault", (inst, def) => {
     }
     const result = def.innerType._zod.run(payload, ctx);
     if (result instanceof Promise) {
-      return result.then((result2) => handleDefaultResult(result2, def));
+      return result.then((result) => handleDefaultResult(result, def));
     }
     return handleDefaultResult(result, def);
   };
@@ -3391,7 +3086,7 @@ var $ZodNonOptional = /* @__PURE__ */ $constructor("$ZodNonOptional", (inst, def
   inst._zod.parse = (payload, ctx) => {
     const result = def.innerType._zod.run(payload, ctx);
     if (result instanceof Promise) {
-      return result.then((result2) => handleNonOptionalResult(result2, inst));
+      return result.then((result) => handleNonOptionalResult(result, inst));
     }
     return handleNonOptionalResult(result, inst);
   };
@@ -3418,13 +3113,13 @@ var $ZodCatch = /* @__PURE__ */ $constructor("$ZodCatch", (inst, def) => {
     }
     const result = def.innerType._zod.run(payload, ctx);
     if (result instanceof Promise) {
-      return result.then((result2) => {
-        payload.value = result2.value;
-        if (result2.issues.length) {
+      return result.then((result) => {
+        payload.value = result.value;
+        if (result.issues.length) {
           payload.value = def.catchValue({
             ...payload,
             error: {
-              issues: result2.issues.map((iss) => finalizeIssue(iss, ctx, config()))
+              issues: result.issues.map((iss) => finalizeIssue(iss, ctx, config()))
             },
             input: payload.value
           });
@@ -3459,13 +3154,13 @@ var $ZodPipe = /* @__PURE__ */ $constructor("$ZodPipe", (inst, def) => {
     if (ctx.direction === "backward") {
       const right = def.out._zod.run(payload, ctx);
       if (right instanceof Promise) {
-        return right.then((right2) => handlePipeResult(right2, def.in, ctx));
+        return right.then((right) => handlePipeResult(right, def.in, ctx));
       }
       return handlePipeResult(right, def.in, ctx);
     }
     const left = def.in._zod.run(payload, ctx);
     if (left instanceof Promise) {
-      return left.then((left2) => handlePipeResult(left2, def.out, ctx));
+      return left.then((left) => handlePipeResult(left, def.out, ctx));
     }
     return handlePipeResult(left, def.out, ctx);
   };
@@ -3511,7 +3206,7 @@ var $ZodCustom = /* @__PURE__ */ $constructor("$ZodCustom", (inst, def) => {
     const input = payload.value;
     const r = def.fn(input);
     if (r instanceof Promise) {
-      return r.then((r2) => handleRefineResult(r2, payload, input, inst));
+      return r.then((r) => handleRefineResult(r, payload, input, inst));
     }
     handleRefineResult(r, payload, input, inst);
     return;
@@ -3582,14 +3277,14 @@ function registry() {
 (_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
 var globalRegistry = globalThis.__zod_globalRegistry;
 // ../../../../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/api.js
-function _string(Class2, params) {
-  return new Class2({
+function _string(Class, params) {
+  return new Class({
     type: "string",
     ...normalizeParams(params)
   });
 }
-function _email(Class2, params) {
-  return new Class2({
+function _email(Class, params) {
+  return new Class({
     type: "string",
     format: "email",
     check: "string_format",
@@ -3597,8 +3292,8 @@ function _email(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _guid(Class2, params) {
-  return new Class2({
+function _guid(Class, params) {
+  return new Class({
     type: "string",
     format: "guid",
     check: "string_format",
@@ -3606,8 +3301,8 @@ function _guid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _uuid(Class2, params) {
-  return new Class2({
+function _uuid(Class, params) {
+  return new Class({
     type: "string",
     format: "uuid",
     check: "string_format",
@@ -3615,8 +3310,8 @@ function _uuid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _uuidv4(Class2, params) {
-  return new Class2({
+function _uuidv4(Class, params) {
+  return new Class({
     type: "string",
     format: "uuid",
     check: "string_format",
@@ -3625,8 +3320,8 @@ function _uuidv4(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _uuidv6(Class2, params) {
-  return new Class2({
+function _uuidv6(Class, params) {
+  return new Class({
     type: "string",
     format: "uuid",
     check: "string_format",
@@ -3635,8 +3330,8 @@ function _uuidv6(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _uuidv7(Class2, params) {
-  return new Class2({
+function _uuidv7(Class, params) {
+  return new Class({
     type: "string",
     format: "uuid",
     check: "string_format",
@@ -3645,8 +3340,8 @@ function _uuidv7(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _url(Class2, params) {
-  return new Class2({
+function _url(Class, params) {
+  return new Class({
     type: "string",
     format: "url",
     check: "string_format",
@@ -3654,8 +3349,8 @@ function _url(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _emoji2(Class2, params) {
-  return new Class2({
+function _emoji2(Class, params) {
+  return new Class({
     type: "string",
     format: "emoji",
     check: "string_format",
@@ -3663,8 +3358,8 @@ function _emoji2(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _nanoid(Class2, params) {
-  return new Class2({
+function _nanoid(Class, params) {
+  return new Class({
     type: "string",
     format: "nanoid",
     check: "string_format",
@@ -3672,8 +3367,8 @@ function _nanoid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _cuid(Class2, params) {
-  return new Class2({
+function _cuid(Class, params) {
+  return new Class({
     type: "string",
     format: "cuid",
     check: "string_format",
@@ -3681,8 +3376,8 @@ function _cuid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _cuid2(Class2, params) {
-  return new Class2({
+function _cuid2(Class, params) {
+  return new Class({
     type: "string",
     format: "cuid2",
     check: "string_format",
@@ -3690,8 +3385,8 @@ function _cuid2(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _ulid(Class2, params) {
-  return new Class2({
+function _ulid(Class, params) {
+  return new Class({
     type: "string",
     format: "ulid",
     check: "string_format",
@@ -3699,8 +3394,8 @@ function _ulid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _xid(Class2, params) {
-  return new Class2({
+function _xid(Class, params) {
+  return new Class({
     type: "string",
     format: "xid",
     check: "string_format",
@@ -3708,8 +3403,8 @@ function _xid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _ksuid(Class2, params) {
-  return new Class2({
+function _ksuid(Class, params) {
+  return new Class({
     type: "string",
     format: "ksuid",
     check: "string_format",
@@ -3717,8 +3412,8 @@ function _ksuid(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _ipv4(Class2, params) {
-  return new Class2({
+function _ipv4(Class, params) {
+  return new Class({
     type: "string",
     format: "ipv4",
     check: "string_format",
@@ -3726,8 +3421,8 @@ function _ipv4(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _ipv6(Class2, params) {
-  return new Class2({
+function _ipv6(Class, params) {
+  return new Class({
     type: "string",
     format: "ipv6",
     check: "string_format",
@@ -3735,8 +3430,8 @@ function _ipv6(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _cidrv4(Class2, params) {
-  return new Class2({
+function _cidrv4(Class, params) {
+  return new Class({
     type: "string",
     format: "cidrv4",
     check: "string_format",
@@ -3744,8 +3439,8 @@ function _cidrv4(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _cidrv6(Class2, params) {
-  return new Class2({
+function _cidrv6(Class, params) {
+  return new Class({
     type: "string",
     format: "cidrv6",
     check: "string_format",
@@ -3753,8 +3448,8 @@ function _cidrv6(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _base64(Class2, params) {
-  return new Class2({
+function _base64(Class, params) {
+  return new Class({
     type: "string",
     format: "base64",
     check: "string_format",
@@ -3762,8 +3457,8 @@ function _base64(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _base64url(Class2, params) {
-  return new Class2({
+function _base64url(Class, params) {
+  return new Class({
     type: "string",
     format: "base64url",
     check: "string_format",
@@ -3771,8 +3466,8 @@ function _base64url(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _e164(Class2, params) {
-  return new Class2({
+function _e164(Class, params) {
+  return new Class({
     type: "string",
     format: "e164",
     check: "string_format",
@@ -3780,8 +3475,8 @@ function _e164(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _jwt(Class2, params) {
-  return new Class2({
+function _jwt(Class, params) {
+  return new Class({
     type: "string",
     format: "jwt",
     check: "string_format",
@@ -3789,8 +3484,8 @@ function _jwt(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _isoDateTime(Class2, params) {
-  return new Class2({
+function _isoDateTime(Class, params) {
+  return new Class({
     type: "string",
     format: "datetime",
     check: "string_format",
@@ -3800,16 +3495,16 @@ function _isoDateTime(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _isoDate(Class2, params) {
-  return new Class2({
+function _isoDate(Class, params) {
+  return new Class({
     type: "string",
     format: "date",
     check: "string_format",
     ...normalizeParams(params)
   });
 }
-function _isoTime(Class2, params) {
-  return new Class2({
+function _isoTime(Class, params) {
+  return new Class({
     type: "string",
     format: "time",
     check: "string_format",
@@ -3817,23 +3512,23 @@ function _isoTime(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _isoDuration(Class2, params) {
-  return new Class2({
+function _isoDuration(Class, params) {
+  return new Class({
     type: "string",
     format: "duration",
     check: "string_format",
     ...normalizeParams(params)
   });
 }
-function _number(Class2, params) {
-  return new Class2({
+function _number(Class, params) {
+  return new Class({
     type: "number",
     checks: [],
     ...normalizeParams(params)
   });
 }
-function _int(Class2, params) {
-  return new Class2({
+function _int(Class, params) {
+  return new Class({
     type: "number",
     check: "number_format",
     abort: false,
@@ -3841,19 +3536,19 @@ function _int(Class2, params) {
     ...normalizeParams(params)
   });
 }
-function _boolean(Class2, params) {
-  return new Class2({
+function _boolean(Class, params) {
+  return new Class({
     type: "boolean",
     ...normalizeParams(params)
   });
 }
-function _unknown(Class2) {
-  return new Class2({
+function _unknown(Class) {
+  return new Class({
     type: "unknown"
   });
 }
-function _never(Class2, params) {
-  return new Class2({
+function _never(Class, params) {
+  return new Class({
     type: "never",
     ...normalizeParams(params)
   });
@@ -3986,15 +3681,15 @@ function _toUpperCase() {
 function _slugify() {
   return _overwrite((input) => slugify(input));
 }
-function _array(Class2, element, params) {
-  return new Class2({
+function _array(Class, element, params) {
+  return new Class({
     type: "array",
     element,
     ...normalizeParams(params)
   });
 }
-function _refine(Class2, fn, _params) {
-  const schema = new Class2({
+function _refine(Class, fn, _params) {
+  const schema = new Class({
     type: "custom",
     check: "custom",
     fn,
@@ -4052,7 +3747,7 @@ function initializeContext(params) {
   };
 }
 function process2(schema, ctx, _params = { path: [], schemaPath: [] }) {
-  var _a3;
+  var _a;
   const def = schema._zod.def;
   const seen = ctx.seen.get(schema);
   if (seen) {
@@ -4100,7 +3795,7 @@ function process2(schema, ctx, _params = { path: [], schemaPath: [] }) {
     delete result.schema.default;
   }
   if (ctx.io === "input" && "_prefault" in result.schema)
-    (_a3 = result.schema).default ?? (_a3.default = result.schema._prefault);
+    (_a = result.schema).default ?? (_a.default = result.schema._prefault);
   delete result.schema._prefault;
   const _result = ctx.seen.get(schema);
   return _result.schema;
@@ -4124,7 +3819,7 @@ function extractDefs(ctx, schema) {
     const defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
     if (ctx.external) {
       const externalId = ctx.external.registry.get(entry[0])?.id;
-      const uriGenerator = ctx.external.uri ?? ((id2) => id2);
+      const uriGenerator = ctx.external.uri ?? ((id) => id);
       if (externalId) {
         return { ref: uriGenerator(externalId) };
       }
@@ -4149,11 +3844,11 @@ function extractDefs(ctx, schema) {
     seen.def = { ...seen.schema };
     if (defId)
       seen.defId = defId;
-    const schema2 = seen.schema;
-    for (const key in schema2) {
-      delete schema2[key];
+    const schema = seen.schema;
+    for (const key in schema) {
+      delete schema[key];
     }
-    schema2.$ref = ref;
+    schema.$ref = ref;
   };
   if (ctx.cycles === "throw") {
     for (const entry of ctx.seen.entries()) {
@@ -4201,8 +3896,8 @@ function finalize(ctx, schema) {
     const seen = ctx.seen.get(zodSchema);
     if (seen.ref === null)
       return;
-    const schema2 = seen.def ?? seen.schema;
-    const _cached = { ...schema2 };
+    const schema = seen.def ?? seen.schema;
+    const _cached = { ...schema };
     const ref = seen.ref;
     seen.ref = null;
     if (ref) {
@@ -4210,28 +3905,28 @@ function finalize(ctx, schema) {
       const refSeen = ctx.seen.get(ref);
       const refSchema = refSeen.schema;
       if (refSchema.$ref && (ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0")) {
-        schema2.allOf = schema2.allOf ?? [];
-        schema2.allOf.push(refSchema);
+        schema.allOf = schema.allOf ?? [];
+        schema.allOf.push(refSchema);
       } else {
-        Object.assign(schema2, refSchema);
+        Object.assign(schema, refSchema);
       }
-      Object.assign(schema2, _cached);
+      Object.assign(schema, _cached);
       const isParentRef = zodSchema._zod.parent === ref;
       if (isParentRef) {
-        for (const key in schema2) {
+        for (const key in schema) {
           if (key === "$ref" || key === "allOf")
             continue;
           if (!(key in _cached)) {
-            delete schema2[key];
+            delete schema[key];
           }
         }
       }
       if (refSchema.$ref && refSeen.def) {
-        for (const key in schema2) {
+        for (const key in schema) {
           if (key === "$ref" || key === "allOf")
             continue;
-          if (key in refSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(refSeen.def[key])) {
-            delete schema2[key];
+          if (key in refSeen.def && JSON.stringify(schema[key]) === JSON.stringify(refSeen.def[key])) {
+            delete schema[key];
           }
         }
       }
@@ -4241,13 +3936,13 @@ function finalize(ctx, schema) {
       flattenRef(parent);
       const parentSeen = ctx.seen.get(parent);
       if (parentSeen?.schema.$ref) {
-        schema2.$ref = parentSeen.schema.$ref;
+        schema.$ref = parentSeen.schema.$ref;
         if (parentSeen.def) {
-          for (const key in schema2) {
+          for (const key in schema) {
             if (key === "$ref" || key === "allOf")
               continue;
-            if (key in parentSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(parentSeen.def[key])) {
-              delete schema2[key];
+            if (key in parentSeen.def && JSON.stringify(schema[key]) === JSON.stringify(parentSeen.def[key])) {
+              delete schema[key];
             }
           }
         }
@@ -4255,7 +3950,7 @@ function finalize(ctx, schema) {
     }
     ctx.override({
       zodSchema,
-      jsonSchema: schema2,
+      jsonSchema: schema,
       path: seen.path ?? []
     });
   };
@@ -4743,14 +4438,14 @@ var initializer2 = (inst, issues) => {
       value: (mapper) => flattenError(inst, mapper)
     },
     addIssue: {
-      value: (issue2) => {
-        inst.issues.push(issue2);
+      value: (issue) => {
+        inst.issues.push(issue);
         inst.message = JSON.stringify(inst.issues, jsonStringifyReplacer, 2);
       }
     },
     addIssues: {
-      value: (issues2) => {
-        inst.issues.push(...issues2);
+      value: (issues) => {
+        inst.issues.push(...issues);
         inst.message = JSON.stringify(inst.issues, jsonStringifyReplacer, 2);
       }
     },
@@ -4844,10 +4539,10 @@ var ZodType = /* @__PURE__ */ $constructor("ZodType", (inst, def) => {
   inst.safeDecodeAsync = async (data, params) => safeDecodeAsync(inst, data, params);
   _installLazyMethods(inst, "ZodType", {
     check(...chks) {
-      const def2 = this.def;
-      return this.clone(exports_util.mergeDefs(def2, {
+      const def = this.def;
+      return this.clone(mergeDefs(def, {
         checks: [
-          ...def2.checks ?? [],
+          ...def.checks ?? [],
           ...chks.map((ch) => typeof ch === "function" ? { _zod: { check: ch, def: { check: "custom" }, onattach: [] } } : ch)
         ]
       }), { parent: true });
@@ -4855,14 +4550,14 @@ var ZodType = /* @__PURE__ */ $constructor("ZodType", (inst, def) => {
     with(...chks) {
       return this.check(...chks);
     },
-    clone(def2, params) {
-      return clone(this, def2, params);
+    clone(def, params) {
+      return clone(this, def, params);
     },
     brand() {
       return this;
     },
-    register(reg, meta2) {
-      reg.add(this, meta2);
+    register(reg, meta) {
+      reg.add(this, meta);
       return this;
     },
     refine(check, params) {
@@ -5238,7 +4933,7 @@ var ZodObject = /* @__PURE__ */ $constructor("ZodObject", (inst, def) => {
   $ZodObjectJIT.init(inst, def);
   ZodType.init(inst, def);
   inst._zod.processJSONSchema = (ctx, json, params) => objectProcessor(inst, ctx, json, params);
-  exports_util.defineLazy(inst, "shape", () => {
+  defineLazy(inst, "shape", () => {
     return def.shape;
   });
   _installLazyMethods(inst, "ZodObject", {
@@ -5261,25 +4956,25 @@ var ZodObject = /* @__PURE__ */ $constructor("ZodObject", (inst, def) => {
       return this.clone({ ...this._zod.def, catchall: undefined });
     },
     extend(incoming) {
-      return exports_util.extend(this, incoming);
+      return extend(this, incoming);
     },
     safeExtend(incoming) {
-      return exports_util.safeExtend(this, incoming);
+      return safeExtend(this, incoming);
     },
     merge(other) {
-      return exports_util.merge(this, other);
+      return merge(this, other);
     },
     pick(mask) {
-      return exports_util.pick(this, mask);
+      return pick(this, mask);
     },
     omit(mask) {
-      return exports_util.omit(this, mask);
+      return omit(this, mask);
     },
     partial(...args) {
-      return exports_util.partial(ZodOptional, this, args[0]);
+      return partial(ZodOptional, this, args[0]);
     },
     required(...args) {
-      return exports_util.required(ZodNonOptional, this, args[0]);
+      return required(ZodNonOptional, this, args[0]);
     }
   });
 });
@@ -5287,7 +4982,7 @@ function object(shape, params) {
   const def = {
     type: "object",
     shape: shape ?? {},
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   };
   return new ZodObject(def);
 }
@@ -5301,7 +4996,7 @@ function union(options, params) {
   return new ZodUnion({
     type: "union",
     options,
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodDiscriminatedUnion = /* @__PURE__ */ $constructor("ZodDiscriminatedUnion", (inst, def) => {
@@ -5313,7 +5008,7 @@ function discriminatedUnion(discriminator, options, params) {
     type: "union",
     options,
     discriminator,
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodIntersection = /* @__PURE__ */ $constructor("ZodIntersection", (inst, def) => {
@@ -5341,14 +5036,14 @@ function record(keyType, valueType, params) {
       type: "record",
       keyType: string2(),
       valueType: keyType,
-      ...exports_util.normalizeParams(valueType)
+      ...normalizeParams(valueType)
     });
   }
   return new ZodRecord({
     type: "record",
     keyType,
     valueType,
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
@@ -5369,7 +5064,7 @@ var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
     return new ZodEnum({
       ...def,
       checks: [],
-      ...exports_util.normalizeParams(params),
+      ...normalizeParams(params),
       entries: newEntries
     });
   };
@@ -5384,7 +5079,7 @@ var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
     return new ZodEnum({
       ...def,
       checks: [],
-      ...exports_util.normalizeParams(params),
+      ...normalizeParams(params),
       entries: newEntries
     });
   };
@@ -5394,7 +5089,7 @@ function _enum(values, params) {
   return new ZodEnum({
     type: "enum",
     entries,
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodLiteral = /* @__PURE__ */ $constructor("ZodLiteral", (inst, def) => {
@@ -5415,7 +5110,7 @@ function literal(value, params) {
   return new ZodLiteral({
     type: "literal",
     values: Array.isArray(value) ? value : [value],
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodTransform = /* @__PURE__ */ $constructor("ZodTransform", (inst, def) => {
@@ -5428,7 +5123,7 @@ var ZodTransform = /* @__PURE__ */ $constructor("ZodTransform", (inst, def) => {
     }
     payload.addIssue = (issue2) => {
       if (typeof issue2 === "string") {
-        payload.issues.push(exports_util.issue(issue2, payload.value, def));
+        payload.issues.push(issue(issue2, payload.value, def));
       } else {
         const _issue = issue2;
         if (_issue.fatal)
@@ -5436,13 +5131,13 @@ var ZodTransform = /* @__PURE__ */ $constructor("ZodTransform", (inst, def) => {
         _issue.code ?? (_issue.code = "custom");
         _issue.input ?? (_issue.input = payload.value);
         _issue.inst ?? (_issue.inst = inst);
-        payload.issues.push(exports_util.issue(_issue));
+        payload.issues.push(issue(_issue));
       }
     };
     const output = def.transform(payload.value, payload);
     if (output instanceof Promise) {
-      return output.then((output2) => {
-        payload.value = output2;
+      return output.then((output) => {
+        payload.value = output;
         payload.fallback = true;
         return payload;
       });
@@ -5506,7 +5201,7 @@ function _default(innerType, defaultValue) {
     type: "default",
     innerType,
     get defaultValue() {
-      return typeof defaultValue === "function" ? defaultValue() : exports_util.shallowClone(defaultValue);
+      return typeof defaultValue === "function" ? defaultValue() : shallowClone(defaultValue);
     }
   });
 }
@@ -5521,7 +5216,7 @@ function prefault(innerType, defaultValue) {
     type: "prefault",
     innerType,
     get defaultValue() {
-      return typeof defaultValue === "function" ? defaultValue() : exports_util.shallowClone(defaultValue);
+      return typeof defaultValue === "function" ? defaultValue() : shallowClone(defaultValue);
     }
   });
 }
@@ -5535,7 +5230,7 @@ function nonoptional(innerType, params) {
   return new ZodNonOptional({
     type: "nonoptional",
     innerType,
-    ...exports_util.normalizeParams(params)
+    ...normalizeParams(params)
   });
 }
 var ZodCatch = /* @__PURE__ */ $constructor("ZodCatch", (inst, def) => {
@@ -6021,6 +5716,15 @@ var OmoTeamSpecLayerSchema = OmoTeamSpecBaseSchema.partial();
 var OmoTeamsConfigSchema = record(string2(), OmoTeamSpecSchema);
 var OmoTeamsConfigLayerSchema = record(string2(), OmoTeamSpecLayerSchema);
 
+// ../../../../omo-config-core/src/schema/telemetry.ts
+var OmoTelemetrySettingsShape = {
+  enabled: boolean2()
+};
+var OmoTelemetrySettingsLayerSchema = object(OmoTelemetrySettingsShape).partial().strict();
+var OmoTelemetrySettingsSchema = OmoTelemetrySettingsLayerSchema.extend({
+  enabled: boolean2().default(true)
+}).strict();
+
 // ../../../../omo-config-core/src/schema/config.ts
 var OmoOpenCodeHarnessConfigSchema = record(string2(), unknown());
 var OmoTypedHarnessConfigSchema = object({
@@ -6030,7 +5734,8 @@ var OmoTypedHarnessConfigSchema = object({
   task: OmoTaskSettingsLayerSchema.optional(),
   teams: OmoTeamsConfigLayerSchema.optional(),
   models: OmoModelCatalogLayerSchema.optional(),
-  memory: OmoMemorySettingsLayerSchema.optional()
+  memory: OmoMemorySettingsLayerSchema.optional(),
+  telemetry: OmoTelemetrySettingsLayerSchema.optional()
 }).strict();
 var OmoConfigProfileSchema = object({
   categories: OmoCategoriesConfigSchema.optional(),
@@ -6040,6 +5745,7 @@ var OmoConfigProfileSchema = object({
   teams: OmoTeamsConfigLayerSchema.optional(),
   models: OmoModelCatalogLayerSchema.optional(),
   memory: OmoMemorySettingsLayerSchema.optional(),
+  telemetry: OmoTelemetrySettingsLayerSchema.optional(),
   "[opencode]": OmoOpenCodeHarnessConfigSchema.optional(),
   "[senpi]": OmoTypedHarnessConfigSchema.optional(),
   "[codex]": OmoTypedHarnessConfigSchema.optional()
@@ -6053,6 +5759,7 @@ var OmoConfigSchema = object({
   teams: OmoTeamsConfigSchema.optional(),
   models: OmoModelCatalogSchema.optional(),
   memory: OmoMemorySettingsSchema.optional(),
+  telemetry: OmoTelemetrySettingsSchema.optional(),
   "[opencode]": OmoOpenCodeHarnessConfigSchema.optional(),
   "[senpi]": OmoTypedHarnessConfigSchema.optional(),
   "[codex]": OmoTypedHarnessConfigSchema.optional(),
@@ -6069,6 +5776,7 @@ var OmoConfigLayerSchema = object({
   teams: OmoTeamsConfigLayerSchema.optional(),
   models: OmoModelCatalogLayerSchema.optional(),
   memory: OmoMemorySettingsLayerSchema.optional(),
+  telemetry: OmoTelemetrySettingsLayerSchema.optional(),
   "[opencode]": OmoOpenCodeHarnessConfigSchema.optional(),
   "[senpi]": OmoTypedHarnessConfigSchema.optional(),
   "[codex]": OmoTypedHarnessConfigSchema.optional(),
@@ -6083,15 +5791,15 @@ function createScanner(text, ignoreTrivia = false) {
   let pos = 0, value = "", tokenOffset = 0, token = 16, lineNumber = 0, lineStartOffset = 0, tokenLineStartOffset = 0, prevTokenLineStartOffset = 0, scanError = 0;
   function scanHexDigits(count, exact) {
     let digits = 0;
-    let value2 = 0;
+    let value = 0;
     while (digits < count || !exact) {
       let ch = text.charCodeAt(pos);
       if (ch >= 48 && ch <= 57) {
-        value2 = value2 * 16 + ch - 48;
+        value = value * 16 + ch - 48;
       } else if (ch >= 65 && ch <= 70) {
-        value2 = value2 * 16 + ch - 65 + 10;
+        value = value * 16 + ch - 65 + 10;
       } else if (ch >= 97 && ch <= 102) {
-        value2 = value2 * 16 + ch - 97 + 10;
+        value = value * 16 + ch - 97 + 10;
       } else {
         break;
       }
@@ -6099,9 +5807,9 @@ function createScanner(text, ignoreTrivia = false) {
       digits++;
     }
     if (digits < count) {
-      value2 = -1;
+      value = -1;
     }
-    return value2;
+    return value;
   }
   function setPosition(newPosition) {
     pos = newPosition;
@@ -6409,87 +6117,87 @@ function isDigit(ch) {
   return ch >= 48 && ch <= 57;
 }
 var CharacterCodes;
-(function(CharacterCodes2) {
-  CharacterCodes2[CharacterCodes2["lineFeed"] = 10] = "lineFeed";
-  CharacterCodes2[CharacterCodes2["carriageReturn"] = 13] = "carriageReturn";
-  CharacterCodes2[CharacterCodes2["space"] = 32] = "space";
-  CharacterCodes2[CharacterCodes2["_0"] = 48] = "_0";
-  CharacterCodes2[CharacterCodes2["_1"] = 49] = "_1";
-  CharacterCodes2[CharacterCodes2["_2"] = 50] = "_2";
-  CharacterCodes2[CharacterCodes2["_3"] = 51] = "_3";
-  CharacterCodes2[CharacterCodes2["_4"] = 52] = "_4";
-  CharacterCodes2[CharacterCodes2["_5"] = 53] = "_5";
-  CharacterCodes2[CharacterCodes2["_6"] = 54] = "_6";
-  CharacterCodes2[CharacterCodes2["_7"] = 55] = "_7";
-  CharacterCodes2[CharacterCodes2["_8"] = 56] = "_8";
-  CharacterCodes2[CharacterCodes2["_9"] = 57] = "_9";
-  CharacterCodes2[CharacterCodes2["a"] = 97] = "a";
-  CharacterCodes2[CharacterCodes2["b"] = 98] = "b";
-  CharacterCodes2[CharacterCodes2["c"] = 99] = "c";
-  CharacterCodes2[CharacterCodes2["d"] = 100] = "d";
-  CharacterCodes2[CharacterCodes2["e"] = 101] = "e";
-  CharacterCodes2[CharacterCodes2["f"] = 102] = "f";
-  CharacterCodes2[CharacterCodes2["g"] = 103] = "g";
-  CharacterCodes2[CharacterCodes2["h"] = 104] = "h";
-  CharacterCodes2[CharacterCodes2["i"] = 105] = "i";
-  CharacterCodes2[CharacterCodes2["j"] = 106] = "j";
-  CharacterCodes2[CharacterCodes2["k"] = 107] = "k";
-  CharacterCodes2[CharacterCodes2["l"] = 108] = "l";
-  CharacterCodes2[CharacterCodes2["m"] = 109] = "m";
-  CharacterCodes2[CharacterCodes2["n"] = 110] = "n";
-  CharacterCodes2[CharacterCodes2["o"] = 111] = "o";
-  CharacterCodes2[CharacterCodes2["p"] = 112] = "p";
-  CharacterCodes2[CharacterCodes2["q"] = 113] = "q";
-  CharacterCodes2[CharacterCodes2["r"] = 114] = "r";
-  CharacterCodes2[CharacterCodes2["s"] = 115] = "s";
-  CharacterCodes2[CharacterCodes2["t"] = 116] = "t";
-  CharacterCodes2[CharacterCodes2["u"] = 117] = "u";
-  CharacterCodes2[CharacterCodes2["v"] = 118] = "v";
-  CharacterCodes2[CharacterCodes2["w"] = 119] = "w";
-  CharacterCodes2[CharacterCodes2["x"] = 120] = "x";
-  CharacterCodes2[CharacterCodes2["y"] = 121] = "y";
-  CharacterCodes2[CharacterCodes2["z"] = 122] = "z";
-  CharacterCodes2[CharacterCodes2["A"] = 65] = "A";
-  CharacterCodes2[CharacterCodes2["B"] = 66] = "B";
-  CharacterCodes2[CharacterCodes2["C"] = 67] = "C";
-  CharacterCodes2[CharacterCodes2["D"] = 68] = "D";
-  CharacterCodes2[CharacterCodes2["E"] = 69] = "E";
-  CharacterCodes2[CharacterCodes2["F"] = 70] = "F";
-  CharacterCodes2[CharacterCodes2["G"] = 71] = "G";
-  CharacterCodes2[CharacterCodes2["H"] = 72] = "H";
-  CharacterCodes2[CharacterCodes2["I"] = 73] = "I";
-  CharacterCodes2[CharacterCodes2["J"] = 74] = "J";
-  CharacterCodes2[CharacterCodes2["K"] = 75] = "K";
-  CharacterCodes2[CharacterCodes2["L"] = 76] = "L";
-  CharacterCodes2[CharacterCodes2["M"] = 77] = "M";
-  CharacterCodes2[CharacterCodes2["N"] = 78] = "N";
-  CharacterCodes2[CharacterCodes2["O"] = 79] = "O";
-  CharacterCodes2[CharacterCodes2["P"] = 80] = "P";
-  CharacterCodes2[CharacterCodes2["Q"] = 81] = "Q";
-  CharacterCodes2[CharacterCodes2["R"] = 82] = "R";
-  CharacterCodes2[CharacterCodes2["S"] = 83] = "S";
-  CharacterCodes2[CharacterCodes2["T"] = 84] = "T";
-  CharacterCodes2[CharacterCodes2["U"] = 85] = "U";
-  CharacterCodes2[CharacterCodes2["V"] = 86] = "V";
-  CharacterCodes2[CharacterCodes2["W"] = 87] = "W";
-  CharacterCodes2[CharacterCodes2["X"] = 88] = "X";
-  CharacterCodes2[CharacterCodes2["Y"] = 89] = "Y";
-  CharacterCodes2[CharacterCodes2["Z"] = 90] = "Z";
-  CharacterCodes2[CharacterCodes2["asterisk"] = 42] = "asterisk";
-  CharacterCodes2[CharacterCodes2["backslash"] = 92] = "backslash";
-  CharacterCodes2[CharacterCodes2["closeBrace"] = 125] = "closeBrace";
-  CharacterCodes2[CharacterCodes2["closeBracket"] = 93] = "closeBracket";
-  CharacterCodes2[CharacterCodes2["colon"] = 58] = "colon";
-  CharacterCodes2[CharacterCodes2["comma"] = 44] = "comma";
-  CharacterCodes2[CharacterCodes2["dot"] = 46] = "dot";
-  CharacterCodes2[CharacterCodes2["doubleQuote"] = 34] = "doubleQuote";
-  CharacterCodes2[CharacterCodes2["minus"] = 45] = "minus";
-  CharacterCodes2[CharacterCodes2["openBrace"] = 123] = "openBrace";
-  CharacterCodes2[CharacterCodes2["openBracket"] = 91] = "openBracket";
-  CharacterCodes2[CharacterCodes2["plus"] = 43] = "plus";
-  CharacterCodes2[CharacterCodes2["slash"] = 47] = "slash";
-  CharacterCodes2[CharacterCodes2["formFeed"] = 12] = "formFeed";
-  CharacterCodes2[CharacterCodes2["tab"] = 9] = "tab";
+(function(CharacterCodes) {
+  CharacterCodes[CharacterCodes["lineFeed"] = 10] = "lineFeed";
+  CharacterCodes[CharacterCodes["carriageReturn"] = 13] = "carriageReturn";
+  CharacterCodes[CharacterCodes["space"] = 32] = "space";
+  CharacterCodes[CharacterCodes["_0"] = 48] = "_0";
+  CharacterCodes[CharacterCodes["_1"] = 49] = "_1";
+  CharacterCodes[CharacterCodes["_2"] = 50] = "_2";
+  CharacterCodes[CharacterCodes["_3"] = 51] = "_3";
+  CharacterCodes[CharacterCodes["_4"] = 52] = "_4";
+  CharacterCodes[CharacterCodes["_5"] = 53] = "_5";
+  CharacterCodes[CharacterCodes["_6"] = 54] = "_6";
+  CharacterCodes[CharacterCodes["_7"] = 55] = "_7";
+  CharacterCodes[CharacterCodes["_8"] = 56] = "_8";
+  CharacterCodes[CharacterCodes["_9"] = 57] = "_9";
+  CharacterCodes[CharacterCodes["a"] = 97] = "a";
+  CharacterCodes[CharacterCodes["b"] = 98] = "b";
+  CharacterCodes[CharacterCodes["c"] = 99] = "c";
+  CharacterCodes[CharacterCodes["d"] = 100] = "d";
+  CharacterCodes[CharacterCodes["e"] = 101] = "e";
+  CharacterCodes[CharacterCodes["f"] = 102] = "f";
+  CharacterCodes[CharacterCodes["g"] = 103] = "g";
+  CharacterCodes[CharacterCodes["h"] = 104] = "h";
+  CharacterCodes[CharacterCodes["i"] = 105] = "i";
+  CharacterCodes[CharacterCodes["j"] = 106] = "j";
+  CharacterCodes[CharacterCodes["k"] = 107] = "k";
+  CharacterCodes[CharacterCodes["l"] = 108] = "l";
+  CharacterCodes[CharacterCodes["m"] = 109] = "m";
+  CharacterCodes[CharacterCodes["n"] = 110] = "n";
+  CharacterCodes[CharacterCodes["o"] = 111] = "o";
+  CharacterCodes[CharacterCodes["p"] = 112] = "p";
+  CharacterCodes[CharacterCodes["q"] = 113] = "q";
+  CharacterCodes[CharacterCodes["r"] = 114] = "r";
+  CharacterCodes[CharacterCodes["s"] = 115] = "s";
+  CharacterCodes[CharacterCodes["t"] = 116] = "t";
+  CharacterCodes[CharacterCodes["u"] = 117] = "u";
+  CharacterCodes[CharacterCodes["v"] = 118] = "v";
+  CharacterCodes[CharacterCodes["w"] = 119] = "w";
+  CharacterCodes[CharacterCodes["x"] = 120] = "x";
+  CharacterCodes[CharacterCodes["y"] = 121] = "y";
+  CharacterCodes[CharacterCodes["z"] = 122] = "z";
+  CharacterCodes[CharacterCodes["A"] = 65] = "A";
+  CharacterCodes[CharacterCodes["B"] = 66] = "B";
+  CharacterCodes[CharacterCodes["C"] = 67] = "C";
+  CharacterCodes[CharacterCodes["D"] = 68] = "D";
+  CharacterCodes[CharacterCodes["E"] = 69] = "E";
+  CharacterCodes[CharacterCodes["F"] = 70] = "F";
+  CharacterCodes[CharacterCodes["G"] = 71] = "G";
+  CharacterCodes[CharacterCodes["H"] = 72] = "H";
+  CharacterCodes[CharacterCodes["I"] = 73] = "I";
+  CharacterCodes[CharacterCodes["J"] = 74] = "J";
+  CharacterCodes[CharacterCodes["K"] = 75] = "K";
+  CharacterCodes[CharacterCodes["L"] = 76] = "L";
+  CharacterCodes[CharacterCodes["M"] = 77] = "M";
+  CharacterCodes[CharacterCodes["N"] = 78] = "N";
+  CharacterCodes[CharacterCodes["O"] = 79] = "O";
+  CharacterCodes[CharacterCodes["P"] = 80] = "P";
+  CharacterCodes[CharacterCodes["Q"] = 81] = "Q";
+  CharacterCodes[CharacterCodes["R"] = 82] = "R";
+  CharacterCodes[CharacterCodes["S"] = 83] = "S";
+  CharacterCodes[CharacterCodes["T"] = 84] = "T";
+  CharacterCodes[CharacterCodes["U"] = 85] = "U";
+  CharacterCodes[CharacterCodes["V"] = 86] = "V";
+  CharacterCodes[CharacterCodes["W"] = 87] = "W";
+  CharacterCodes[CharacterCodes["X"] = 88] = "X";
+  CharacterCodes[CharacterCodes["Y"] = 89] = "Y";
+  CharacterCodes[CharacterCodes["Z"] = 90] = "Z";
+  CharacterCodes[CharacterCodes["asterisk"] = 42] = "asterisk";
+  CharacterCodes[CharacterCodes["backslash"] = 92] = "backslash";
+  CharacterCodes[CharacterCodes["closeBrace"] = 125] = "closeBrace";
+  CharacterCodes[CharacterCodes["closeBracket"] = 93] = "closeBracket";
+  CharacterCodes[CharacterCodes["colon"] = 58] = "colon";
+  CharacterCodes[CharacterCodes["comma"] = 44] = "comma";
+  CharacterCodes[CharacterCodes["dot"] = 46] = "dot";
+  CharacterCodes[CharacterCodes["doubleQuote"] = 34] = "doubleQuote";
+  CharacterCodes[CharacterCodes["minus"] = 45] = "minus";
+  CharacterCodes[CharacterCodes["openBrace"] = 123] = "openBrace";
+  CharacterCodes[CharacterCodes["openBracket"] = 91] = "openBracket";
+  CharacterCodes[CharacterCodes["plus"] = 43] = "plus";
+  CharacterCodes[CharacterCodes["slash"] = 47] = "slash";
+  CharacterCodes[CharacterCodes["formFeed"] = 12] = "formFeed";
+  CharacterCodes[CharacterCodes["tab"] = 9] = "tab";
 })(CharacterCodes || (CharacterCodes = {}));
 
 // ../../../../../node_modules/.bun/jsonc-parser@3.3.1/node_modules/jsonc-parser/lib/esm/impl/string-intern.js
@@ -6771,12 +6479,12 @@ function isEOL(text, offset) {
 
 // ../../../../../node_modules/.bun/jsonc-parser@3.3.1/node_modules/jsonc-parser/lib/esm/impl/parser.js
 var ParseOptions;
-(function(ParseOptions2) {
-  ParseOptions2.DEFAULT = {
+(function(ParseOptions) {
+  ParseOptions.DEFAULT = {
     allowTrailingComma: false
   };
 })(ParseOptions || (ParseOptions = {}));
-function parse4(text, errors2 = [], options = ParseOptions.DEFAULT) {
+function parse4(text, errors = [], options = ParseOptions.DEFAULT) {
   let currentProperty = null;
   let currentParent = [];
   const previousParents = [];
@@ -6789,10 +6497,10 @@ function parse4(text, errors2 = [], options = ParseOptions.DEFAULT) {
   }
   const visitor = {
     onObjectBegin: () => {
-      const object2 = {};
-      onValue(object2);
+      const object = {};
+      onValue(object);
       previousParents.push(currentParent);
-      currentParent = object2;
+      currentParent = object;
       currentProperty = null;
     },
     onObjectProperty: (name) => {
@@ -6802,10 +6510,10 @@ function parse4(text, errors2 = [], options = ParseOptions.DEFAULT) {
       currentParent = previousParents.pop();
     },
     onArrayBegin: () => {
-      const array2 = [];
-      onValue(array2);
+      const array = [];
+      onValue(array);
       previousParents.push(currentParent);
-      currentParent = array2;
+      currentParent = array;
       currentProperty = null;
     },
     onArrayEnd: () => {
@@ -6813,13 +6521,13 @@ function parse4(text, errors2 = [], options = ParseOptions.DEFAULT) {
     },
     onLiteralValue: onValue,
     onError: (error, offset, length) => {
-      errors2.push({ error, offset, length });
+      errors.push({ error, offset, length });
     }
   };
   visit(text, visitor, options);
   return currentParent[0];
 }
-function parseTree(text, errors2 = [], options = ParseOptions.DEFAULT) {
+function parseTree(text, errors = [], options = ParseOptions.DEFAULT) {
   let currentParent = { type: "array", offset: -1, length: -1, children: [], parent: undefined };
   function ensurePropertyComplete(endOffset) {
     if (currentParent.type === "property") {
@@ -6867,7 +6575,7 @@ function parseTree(text, errors2 = [], options = ParseOptions.DEFAULT) {
       }
     },
     onError: (error, offset, length) => {
-      errors2.push({ error, offset, length });
+      errors.push({ error, offset, length });
     }
   };
   visit(text, visitor, options);
@@ -7184,8 +6892,8 @@ function getNodeType(value) {
 // ../../../../../node_modules/.bun/jsonc-parser@3.3.1/node_modules/jsonc-parser/lib/esm/impl/edit.js
 function setProperty(text, originalPath, value, options) {
   const path = originalPath.slice();
-  const errors2 = [];
-  const root = parseTree(text, errors2);
+  const errors = [];
+  const root = parseTree(text, errors);
   let parent = undefined;
   let lastSegment = undefined;
   while (path.length > 0) {
@@ -7312,11 +7020,11 @@ function withFormatting(text, edit, options) {
   }
   const edits = format(newText, { offset: begin, length: end - begin }, { ...options.formattingOptions, keepLines: false });
   for (let i = edits.length - 1;i >= 0; i--) {
-    const edit2 = edits[i];
-    newText = applyEdit(newText, edit2);
-    begin = Math.min(begin, edit2.offset);
-    end = Math.max(end, edit2.offset + edit2.length);
-    end += edit2.content.length - edit2.length;
+    const edit = edits[i];
+    newText = applyEdit(newText, edit);
+    begin = Math.min(begin, edit.offset);
+    end = Math.max(end, edit.offset + edit.length);
+    end += edit.content.length - edit.length;
   }
   const editLength = text.length - (newText.length - end) - begin;
   return [{ offset: begin, length: editLength, content: newText.substring(begin, end) }];
@@ -7327,54 +7035,54 @@ function applyEdit(text, edit) {
 
 // ../../../../../node_modules/.bun/jsonc-parser@3.3.1/node_modules/jsonc-parser/lib/esm/main.js
 var ScanError;
-(function(ScanError2) {
-  ScanError2[ScanError2["None"] = 0] = "None";
-  ScanError2[ScanError2["UnexpectedEndOfComment"] = 1] = "UnexpectedEndOfComment";
-  ScanError2[ScanError2["UnexpectedEndOfString"] = 2] = "UnexpectedEndOfString";
-  ScanError2[ScanError2["UnexpectedEndOfNumber"] = 3] = "UnexpectedEndOfNumber";
-  ScanError2[ScanError2["InvalidUnicode"] = 4] = "InvalidUnicode";
-  ScanError2[ScanError2["InvalidEscapeCharacter"] = 5] = "InvalidEscapeCharacter";
-  ScanError2[ScanError2["InvalidCharacter"] = 6] = "InvalidCharacter";
+(function(ScanError) {
+  ScanError[ScanError["None"] = 0] = "None";
+  ScanError[ScanError["UnexpectedEndOfComment"] = 1] = "UnexpectedEndOfComment";
+  ScanError[ScanError["UnexpectedEndOfString"] = 2] = "UnexpectedEndOfString";
+  ScanError[ScanError["UnexpectedEndOfNumber"] = 3] = "UnexpectedEndOfNumber";
+  ScanError[ScanError["InvalidUnicode"] = 4] = "InvalidUnicode";
+  ScanError[ScanError["InvalidEscapeCharacter"] = 5] = "InvalidEscapeCharacter";
+  ScanError[ScanError["InvalidCharacter"] = 6] = "InvalidCharacter";
 })(ScanError || (ScanError = {}));
 var SyntaxKind;
-(function(SyntaxKind2) {
-  SyntaxKind2[SyntaxKind2["OpenBraceToken"] = 1] = "OpenBraceToken";
-  SyntaxKind2[SyntaxKind2["CloseBraceToken"] = 2] = "CloseBraceToken";
-  SyntaxKind2[SyntaxKind2["OpenBracketToken"] = 3] = "OpenBracketToken";
-  SyntaxKind2[SyntaxKind2["CloseBracketToken"] = 4] = "CloseBracketToken";
-  SyntaxKind2[SyntaxKind2["CommaToken"] = 5] = "CommaToken";
-  SyntaxKind2[SyntaxKind2["ColonToken"] = 6] = "ColonToken";
-  SyntaxKind2[SyntaxKind2["NullKeyword"] = 7] = "NullKeyword";
-  SyntaxKind2[SyntaxKind2["TrueKeyword"] = 8] = "TrueKeyword";
-  SyntaxKind2[SyntaxKind2["FalseKeyword"] = 9] = "FalseKeyword";
-  SyntaxKind2[SyntaxKind2["StringLiteral"] = 10] = "StringLiteral";
-  SyntaxKind2[SyntaxKind2["NumericLiteral"] = 11] = "NumericLiteral";
-  SyntaxKind2[SyntaxKind2["LineCommentTrivia"] = 12] = "LineCommentTrivia";
-  SyntaxKind2[SyntaxKind2["BlockCommentTrivia"] = 13] = "BlockCommentTrivia";
-  SyntaxKind2[SyntaxKind2["LineBreakTrivia"] = 14] = "LineBreakTrivia";
-  SyntaxKind2[SyntaxKind2["Trivia"] = 15] = "Trivia";
-  SyntaxKind2[SyntaxKind2["Unknown"] = 16] = "Unknown";
-  SyntaxKind2[SyntaxKind2["EOF"] = 17] = "EOF";
+(function(SyntaxKind) {
+  SyntaxKind[SyntaxKind["OpenBraceToken"] = 1] = "OpenBraceToken";
+  SyntaxKind[SyntaxKind["CloseBraceToken"] = 2] = "CloseBraceToken";
+  SyntaxKind[SyntaxKind["OpenBracketToken"] = 3] = "OpenBracketToken";
+  SyntaxKind[SyntaxKind["CloseBracketToken"] = 4] = "CloseBracketToken";
+  SyntaxKind[SyntaxKind["CommaToken"] = 5] = "CommaToken";
+  SyntaxKind[SyntaxKind["ColonToken"] = 6] = "ColonToken";
+  SyntaxKind[SyntaxKind["NullKeyword"] = 7] = "NullKeyword";
+  SyntaxKind[SyntaxKind["TrueKeyword"] = 8] = "TrueKeyword";
+  SyntaxKind[SyntaxKind["FalseKeyword"] = 9] = "FalseKeyword";
+  SyntaxKind[SyntaxKind["StringLiteral"] = 10] = "StringLiteral";
+  SyntaxKind[SyntaxKind["NumericLiteral"] = 11] = "NumericLiteral";
+  SyntaxKind[SyntaxKind["LineCommentTrivia"] = 12] = "LineCommentTrivia";
+  SyntaxKind[SyntaxKind["BlockCommentTrivia"] = 13] = "BlockCommentTrivia";
+  SyntaxKind[SyntaxKind["LineBreakTrivia"] = 14] = "LineBreakTrivia";
+  SyntaxKind[SyntaxKind["Trivia"] = 15] = "Trivia";
+  SyntaxKind[SyntaxKind["Unknown"] = 16] = "Unknown";
+  SyntaxKind[SyntaxKind["EOF"] = 17] = "EOF";
 })(SyntaxKind || (SyntaxKind = {}));
 var parse5 = parse4;
 var ParseErrorCode;
-(function(ParseErrorCode2) {
-  ParseErrorCode2[ParseErrorCode2["InvalidSymbol"] = 1] = "InvalidSymbol";
-  ParseErrorCode2[ParseErrorCode2["InvalidNumberFormat"] = 2] = "InvalidNumberFormat";
-  ParseErrorCode2[ParseErrorCode2["PropertyNameExpected"] = 3] = "PropertyNameExpected";
-  ParseErrorCode2[ParseErrorCode2["ValueExpected"] = 4] = "ValueExpected";
-  ParseErrorCode2[ParseErrorCode2["ColonExpected"] = 5] = "ColonExpected";
-  ParseErrorCode2[ParseErrorCode2["CommaExpected"] = 6] = "CommaExpected";
-  ParseErrorCode2[ParseErrorCode2["CloseBraceExpected"] = 7] = "CloseBraceExpected";
-  ParseErrorCode2[ParseErrorCode2["CloseBracketExpected"] = 8] = "CloseBracketExpected";
-  ParseErrorCode2[ParseErrorCode2["EndOfFileExpected"] = 9] = "EndOfFileExpected";
-  ParseErrorCode2[ParseErrorCode2["InvalidCommentToken"] = 10] = "InvalidCommentToken";
-  ParseErrorCode2[ParseErrorCode2["UnexpectedEndOfComment"] = 11] = "UnexpectedEndOfComment";
-  ParseErrorCode2[ParseErrorCode2["UnexpectedEndOfString"] = 12] = "UnexpectedEndOfString";
-  ParseErrorCode2[ParseErrorCode2["UnexpectedEndOfNumber"] = 13] = "UnexpectedEndOfNumber";
-  ParseErrorCode2[ParseErrorCode2["InvalidUnicode"] = 14] = "InvalidUnicode";
-  ParseErrorCode2[ParseErrorCode2["InvalidEscapeCharacter"] = 15] = "InvalidEscapeCharacter";
-  ParseErrorCode2[ParseErrorCode2["InvalidCharacter"] = 16] = "InvalidCharacter";
+(function(ParseErrorCode) {
+  ParseErrorCode[ParseErrorCode["InvalidSymbol"] = 1] = "InvalidSymbol";
+  ParseErrorCode[ParseErrorCode["InvalidNumberFormat"] = 2] = "InvalidNumberFormat";
+  ParseErrorCode[ParseErrorCode["PropertyNameExpected"] = 3] = "PropertyNameExpected";
+  ParseErrorCode[ParseErrorCode["ValueExpected"] = 4] = "ValueExpected";
+  ParseErrorCode[ParseErrorCode["ColonExpected"] = 5] = "ColonExpected";
+  ParseErrorCode[ParseErrorCode["CommaExpected"] = 6] = "CommaExpected";
+  ParseErrorCode[ParseErrorCode["CloseBraceExpected"] = 7] = "CloseBraceExpected";
+  ParseErrorCode[ParseErrorCode["CloseBracketExpected"] = 8] = "CloseBracketExpected";
+  ParseErrorCode[ParseErrorCode["EndOfFileExpected"] = 9] = "EndOfFileExpected";
+  ParseErrorCode[ParseErrorCode["InvalidCommentToken"] = 10] = "InvalidCommentToken";
+  ParseErrorCode[ParseErrorCode["UnexpectedEndOfComment"] = 11] = "UnexpectedEndOfComment";
+  ParseErrorCode[ParseErrorCode["UnexpectedEndOfString"] = 12] = "UnexpectedEndOfString";
+  ParseErrorCode[ParseErrorCode["UnexpectedEndOfNumber"] = 13] = "UnexpectedEndOfNumber";
+  ParseErrorCode[ParseErrorCode["InvalidUnicode"] = 14] = "InvalidUnicode";
+  ParseErrorCode[ParseErrorCode["InvalidEscapeCharacter"] = 15] = "InvalidEscapeCharacter";
+  ParseErrorCode[ParseErrorCode["InvalidCharacter"] = 16] = "InvalidCharacter";
 })(ParseErrorCode || (ParseErrorCode = {}));
 function printParseErrorCode(code) {
   switch (code) {
@@ -7594,19 +7302,19 @@ function toRecord(value) {
     return;
   return Object.fromEntries(Object.entries(value));
 }
-function withoutControlKeys(config2) {
+function withoutControlKeys(config) {
   const result = {};
-  for (const [key, value] of Object.entries(config2)) {
+  for (const [key, value] of Object.entries(config)) {
     if (key === "profiles" || HARNESS_KEYS.includes(key))
       continue;
     result[key] = value;
   }
   return result;
 }
-function harnessLayer(config2, harness) {
+function harnessLayer(config, harness) {
   if (harness === undefined)
     return {};
-  return toRecord(config2[`[${harness}]`]) ?? {};
+  return toRecord(config[`[${harness}]`]) ?? {};
 }
 function resolveOmoConfigView(options) {
   const profiles = toRecord(options.config["profiles"]);
@@ -7622,12 +7330,12 @@ function resolveOmoConfigView(options) {
     profile === undefined ? {} : withoutControlKeys(profile),
     profile === undefined ? {} : harnessLayer(profile, options.harness)
   ];
-  let config2 = {};
+  let config = {};
   for (const layer of layers)
-    config2 = mergeOmoConfigRecords(config2, layer);
+    config = mergeOmoConfigRecords(config, layer);
   const resolvedProfile = options.profile !== undefined && profile !== undefined ? options.profile : undefined;
   return {
-    config: withoutControlKeys(config2),
+    config: withoutControlKeys(config),
     diagnostics,
     ...resolvedProfile === undefined ? {} : { profile: resolvedProfile }
   };
@@ -7635,14 +7343,14 @@ function resolveOmoConfigView(options) {
 
 // ../../../../omo-config-core/src/loader/loader.ts
 function parseJsoncSafe(content) {
-  const errors2 = [];
-  const data = parse5(content.charCodeAt(0) === 65279 ? content.slice(1) : content, errors2, {
+  const errors = [];
+  const data = parse5(content.charCodeAt(0) === 65279 ? content.slice(1) : content, errors, {
     allowTrailingComma: true,
     disallowComments: false
   });
   return {
-    data: errors2.length === 0 ? data : null,
-    errors: errors2.map((error) => ({
+    data: errors.length === 0 ? data : null,
+    errors: errors.map((error) => ({
       message: printParseErrorCode(error.error),
       offset: error.offset
     }))
@@ -7655,18 +7363,18 @@ var DEFAULT_RAW_CONFIG = {
   task: resolveOmoTaskSettings({}),
   teams: {}
 };
-function stripResolutionControlKeys(config2) {
+function stripResolutionControlKeys(config) {
   const {
     "[codex]": _codex,
     "[opencode]": _opencode,
     "[senpi]": _senpi,
     profiles: _profiles,
     ...resolved
-  } = config2;
+  } = config;
   return resolved;
 }
 function validationDiagnostic(path, issues) {
-  const issuePaths = issues.map((issue2) => issue2.path.map((segment) => String(segment)).join("."));
+  const issuePaths = issues.map((issue) => issue.path.map((segment) => String(segment)).join("."));
   return {
     kind: "validation",
     message: `Invalid omo config at ${path}: ${issuePaths.join(", ")}`,
@@ -7677,11 +7385,11 @@ function validationDiagnostic(path, issues) {
 function toRecord2(value) {
   if (value === null || typeof value !== "object" || Array.isArray(value))
     return null;
-  const record2 = {};
+  const record = {};
   for (const [key, entry] of Object.entries(value)) {
-    record2[key] = entry;
+    record[key] = entry;
   }
-  return record2;
+  return record;
 }
 function readConfigSource(path, scope, fileSystem) {
   if (!fileSystem.existsSync(path)) {
@@ -7825,14 +7533,14 @@ function stripBom(content) {
   return content.charCodeAt(0) === 65279 ? content.slice(1) : content;
 }
 function parseJsoncSafe2(content) {
-  const errors2 = [];
-  const data = parse5(stripBom(content), errors2, {
+  const errors = [];
+  const data = parse5(stripBom(content), errors, {
     allowTrailingComma: true,
     disallowComments: false
   });
   return {
-    data: errors2.length > 0 ? null : data,
-    errors: errors2.map((e) => ({
+    data: errors.length > 0 ? null : data,
+    errors: errors.map((e) => ({
       message: printParseErrorCode(e.error),
       offset: e.offset,
       length: e.length
@@ -7880,11 +7588,11 @@ function resolveWritePath(options) {
     return options.targetPath;
   const fileSystem = options.fileSystem ?? DEFAULT_WRITE_FILE_SYSTEM;
   if (options.scope === "user") {
-    const jsoncPath2 = resolveUserOmoConfigPath(options.env);
-    if (fileSystem.existsSync(jsoncPath2))
-      return jsoncPath2;
-    const jsonPath2 = join8(dirname3(jsoncPath2), "omo.json");
-    return fileSystem.existsSync(jsonPath2) ? jsonPath2 : jsoncPath2;
+    const jsoncPath = resolveUserOmoConfigPath(options.env);
+    if (fileSystem.existsSync(jsoncPath))
+      return jsoncPath;
+    const jsonPath = join8(dirname3(jsoncPath), "omo.json");
+    return fileSystem.existsSync(jsonPath) ? jsonPath : jsoncPath;
   }
   const jsoncPath = join8(options.projectDir ?? process.cwd(), ".omo", "omo.jsonc");
   if (fileSystem.existsSync(jsoncPath))
@@ -8024,16 +7732,16 @@ function cloneValue(value) {
     return value.map((entry) => cloneValue(entry));
   if (!isPlainObject3(value))
     return value;
-  const clone2 = {};
+  const clone = {};
   for (const [key, entry] of Object.entries(value)) {
     if (isUnsafeObjectKey2(key))
       continue;
-    clone2[key] = cloneValue(entry);
+    clone[key] = cloneValue(entry);
   }
-  return clone2;
+  return clone;
 }
-function hasOwn(record2, key) {
-  return Object.prototype.hasOwnProperty.call(record2, key);
+function hasOwn(record, key) {
+  return Object.prototype.hasOwnProperty.call(record, key);
 }
 function mergeInto(existing, legacy, path, diagnostics) {
   const additions = {};
@@ -8180,7 +7888,7 @@ function validateTarget(targetPath, document) {
   const result = OmoConfigSchema.safeParse(document);
   if (result.success)
     return;
-  const detail = result.error.issues.map((issue2) => `${issue2.path.join(".")}: ${issue2.message}`).join(", ");
+  const detail = result.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(", ");
   throw new MigrationValidationError(targetPath, detail);
 }
 function writerInput(targetPath, env) {
@@ -8253,8 +7961,8 @@ function migrationJournalPath(env) {
 function isFileExistsError2(error) {
   return error instanceof Error && Reflect.get(error, "code") === "EEXIST";
 }
-function journalTempPath(path, process3, clock, attempt) {
-  const suffix = `${process3.pid}.${clock.now()}`;
+function journalTempPath(path, process2, clock, attempt) {
+  const suffix = `${process2.pid}.${clock.now()}`;
   return attempt === 0 ? `${path}.${suffix}.tmp` : `${path}.${suffix}.${attempt}.tmp`;
 }
 function parseJournal(value) {
@@ -8311,13 +8019,13 @@ function readMigrationJournal(fileSystem, env) {
     return null;
   return parseJournal(JSON.parse(fileSystem.readFileSync(path, "utf-8")));
 }
-function writeMigrationJournal(journal, fileSystem, env, process3, clock) {
+function writeMigrationJournal(journal, fileSystem, env, process2, clock) {
   const path = migrationJournalPath(env);
   const content = `${JSON.stringify(journal)}
 `;
   let attempt = 0;
   while (true) {
-    const temporaryPath = journalTempPath(path, process3, clock, attempt);
+    const temporaryPath = journalTempPath(path, process2, clock, attempt);
     try {
       fileSystem.writeFileExclusiveSync(temporaryPath, content);
       fileSystem.renameSync(temporaryPath, path);
@@ -8372,17 +8080,17 @@ function parseLockRecord(content) {
     throw error;
   }
 }
-function leaseContent(process3, clock, duration3) {
-  return `${JSON.stringify({ leaseExpiresAt: clock.now() + duration3, pid: process3.pid })}
+function leaseContent(process2, clock, duration) {
+  return `${JSON.stringify({ leaseExpiresAt: clock.now() + duration, pid: process2.pid })}
 `;
 }
-function isReclaimable(record2, clock, process3, leaseDurationMs) {
+function isReclaimable(record, clock, process2, leaseDurationMs) {
   const now = clock.now();
-  if (record2.leaseExpiresAt > now)
+  if (record.leaseExpiresAt > now)
     return false;
-  if (!process3.isAlive(record2.pid))
+  if (!process2.isAlive(record.pid))
     return true;
-  return record2.leaseExpiresAt + leaseDurationMs * LIVE_OWNER_STALE_LEASE_MULTIPLIER <= now;
+  return record.leaseExpiresAt + leaseDurationMs * LIVE_OWNER_STALE_LEASE_MULTIPLIER <= now;
 }
 function sleepSync(milliseconds) {
   Atomics.wait(MUTATION_GUARD_SLEEP_VIEW, 0, 0, milliseconds);
@@ -8427,8 +8135,8 @@ function acquireMigrationLock(input) {
       input.fileSystem.writeFileExclusiveSync(path, currentContent);
       let ownedContent = currentContent;
       const mutate = (mutation) => {
-        const guardContent2 = acquireMutationGuard(input);
-        if (guardContent2 === null)
+        const guardContent = acquireMutationGuard(input);
+        if (guardContent === null)
           throw new Error("Migration lock mutation is busy");
         try {
           const renewedContent = leaseContent(input.process, input.clock, leaseDurationMs);
@@ -8436,20 +8144,20 @@ function acquireMigrationLock(input) {
             throw new Error("Migration lock ownership was lost");
           ownedContent = renewedContent;
         } finally {
-          releaseMutationGuard({ env: input.env, fileSystem: input.fileSystem, content: guardContent2 });
+          releaseMutationGuard({ env: input.env, fileSystem: input.fileSystem, content: guardContent });
         }
       };
       return {
         release: () => {
-          const guardContent2 = acquireMutationGuard(input);
-          if (guardContent2 === null) {
+          const guardContent = acquireMutationGuard(input);
+          if (guardContent === null) {
             input.fileSystem.removeIfContentsMatchSync(path, ownedContent);
             return;
           }
           try {
             input.fileSystem.removeIfContentsMatchSync(path, ownedContent);
           } finally {
-            releaseMutationGuard({ env: input.env, fileSystem: input.fileSystem, content: guardContent2 });
+            releaseMutationGuard({ env: input.env, fileSystem: input.fileSystem, content: guardContent });
           }
         },
         renew: () => {
@@ -8657,13 +8365,13 @@ function runMigrations(options) {
   const userProfile = globalThis.process.env["USERPROFILE"];
   const env = options.env ?? { ...home === undefined ? {} : { HOME: home }, ...userProfile === undefined ? {} : { USERPROFILE: userProfile } };
   const fileSystem = options.fileSystem ?? DEFAULT_MIGRATION_FILE_SYSTEM;
-  const process3 = { isAlive: options.isProcessAlive ?? DEFAULT_MIGRATION_PROCESS.isAlive, pid: options.pid ?? DEFAULT_MIGRATION_PROCESS.pid };
+  const process2 = { isAlive: options.isProcessAlive ?? DEFAULT_MIGRATION_PROCESS.isAlive, pid: options.pid ?? DEFAULT_MIGRATION_PROCESS.pid };
   const writeTarget = options.writeTarget ?? writeOmoMigrationTarget;
-  const lock = acquireMigrationLock({ clock, env, fileSystem, ...options.leaseDurationMs === undefined ? {} : { leaseDurationMs: options.leaseDurationMs }, process: process3 });
+  const lock = acquireMigrationLock({ clock, env, fileSystem, ...options.leaseDurationMs === undefined ? {} : { leaseDurationMs: options.leaseDurationMs }, process: process2 });
   if (lock === null)
     return { journalResumed: false, results: [], status: "locked" };
   try {
-    const journalResumed = resumeMigrationJournal({ clock, env, fileSystem, process: process3, renewLock: lock.renew, writeTarget });
+    const journalResumed = resumeMigrationJournal({ clock, env, fileSystem, process: process2, renewLock: lock.renew, writeTarget });
     lock.renew();
     const results = options.discover().map((plan) => executePlan({
       clock,
@@ -8673,7 +8381,7 @@ function runMigrations(options) {
       journalResumed,
       onBoundary: options.onBoundary,
       plan,
-      process: process3,
+      process: process2,
       renewLock: lock.renew,
       writeTarget
     }));
@@ -8715,8 +8423,8 @@ function migrationHistory(sources, configPath) {
   return history.length === 0 ? {} : { [configPath]: history };
 }
 function transformConfigJsonc(configPath, sources) {
-  const config2 = sources.find((source) => source.path === configPath);
-  const legacy = config2 === undefined || !isRecord5(config2.value) ? {} : config2.value;
+  const config = sources.find((source) => source.path === configPath);
+  const legacy = config === undefined || !isRecord5(config.value) ? {} : config.value;
   const omo = recordAt(legacy, "[omo]");
   const senpi = recordAt(legacy, "[senpi]");
   const history = migrationHistory(sources, configPath);
@@ -8877,8 +8585,8 @@ function migrationWarnings(result) {
   }
   return warnings;
 }
-function applicabilityWarnings(config2) {
-  return config2.codegraph?.watch_debounce_ms === undefined ? [] : ["codegraph.watch_debounce_ms is not supported for harness codex"];
+function applicabilityWarnings(config) {
+  return config.codegraph?.watch_debounce_ms === undefined ? [] : ["codegraph.watch_debounce_ms is not supported for harness codex"];
 }
 function codexCodegraphConfig(value) {
   if (value === undefined)
@@ -8922,9 +8630,9 @@ function getCodexOmoConfig(options = {}) {
     ...options.profile === undefined ? {} : { profile: options.profile }
   });
   const envWarnings = [];
-  const config2 = OmoConfigSchema.parse(mergeOmoConfigRecords(result.config, envOverrides(env, envWarnings)));
+  const config = OmoConfigSchema.parse(mergeOmoConfigRecords(result.config, envOverrides(env, envWarnings)));
   const trustedCodegraphInstallDir = trustedConfig.config.codegraph?.install_dir;
-  const { codegraph, ...resolvedConfig } = config2;
+  const { codegraph, ...resolvedConfig } = config;
   const codexCodegraph = codexCodegraphConfig(codegraph);
   return {
     ...resolvedConfig,
@@ -8935,7 +8643,7 @@ function getCodexOmoConfig(options = {}) {
       ...migrationWarnings(migration),
       ...result.diagnostics.map((diagnostic) => diagnostic.message),
       ...envWarnings,
-      ...applicabilityWarnings(config2)
+      ...applicabilityWarnings(config)
     ]
   };
 }
@@ -8991,7 +8699,7 @@ ${body}` : `${body}
   await writeChunk(output, payload);
 }
 function writeChunk(output, chunk) {
-  return new Promise((resolve5, reject) => {
+  return new Promise((resolve, reject) => {
     let settled = false;
     const onError = (error) => {
       if (settled)
@@ -9011,7 +8719,7 @@ function writeChunk(output, chunk) {
           return;
         }
         output.removeListener("error", onError);
-        resolve5();
+        resolve();
       });
     } catch (error) {
       output.removeListener("error", onError);
@@ -9113,33 +8821,33 @@ function isProcessAlive(pid) {
     return !hasErrorCode(error, "ESRCH");
   }
 }
-async function runJsonRpcStdioServer(config2) {
-  const log = config2.log ?? noopLog;
-  const idleTimeoutMs = config2.idleTimeoutMs ?? DEFAULT_IDLE_TIMEOUT_MS;
+async function runJsonRpcStdioServer(config) {
+  const log = config.log ?? noopLog;
+  const idleTimeoutMs = config.idleTimeoutMs ?? DEFAULT_IDLE_TIMEOUT_MS;
   let isClosed = false;
   const idleTimer = createIdleTimer(idleTimeoutMs, log, () => {
     isClosed = true;
-    config2.onIdleTimeout?.();
+    config.onIdleTimeout?.();
   });
-  const watchdog = createParentWatchdog(config2.parentWatchdog, (parentPid, pollIntervalMs) => {
+  const watchdog = createParentWatchdog(config.parentWatchdog, (parentPid, pollIntervalMs) => {
     isClosed = true;
     log("parent_exit", { parent_pid: parentPid, poll_interval_ms: pollIntervalMs });
-    config2.onParentExit?.();
-    config2.input.destroy();
+    config.onParentExit?.();
+    config.input.destroy();
   });
   log("stdio_started", { cwd: process.cwd(), idle_timeout_ms: idleTimeoutMs });
   idleTimer.arm();
   try {
-    for await (const message of readStdioJsonRpcMessages(config2.input)) {
+    for await (const message of readStdioJsonRpcMessages(config.input)) {
       if (isClosed)
         break;
       idleTimer.arm();
       if (message.kind === "parse_error") {
-        if (!await handleParseError(message, config2, log))
+        if (!await handleParseError(message, config, log))
           break;
         continue;
       }
-      if (!await handleRequest(message, config2, log))
+      if (!await handleRequest(message, config, log))
         break;
     }
   } catch (error) {
@@ -9151,35 +8859,35 @@ async function runJsonRpcStdioServer(config2) {
     log("stdio_stopped");
   }
 }
-async function handleParseError(message, config2, log) {
+async function handleParseError(message, config, log) {
   log("parse_error", { message: message.message });
-  const response = config2.parseErrorResponse?.(message.message) ?? errorResponse(null, -32700, "Parse error", message.message);
+  const response = config.parseErrorResponse?.(message.message) ?? errorResponse(null, -32700, "Parse error", message.message);
   if (response === undefined)
     return true;
   return writeResponse(response, {
-    output: config2.output,
+    output: config.output,
     responseMode: message.responseMode,
     log
   });
 }
-async function handleRequest(message, config2, log) {
+async function handleRequest(message, config, log) {
   const parsed = message.payload;
   const id = isPlainRecord2(parsed) ? jsonRpcId(parsed["id"]) : null;
   const method = isPlainRecord2(parsed) && typeof parsed["method"] === "string" ? parsed["method"] : null;
   log("request", { id: id === null ? null : String(id), method });
   let response;
   try {
-    response = await config2.handler(parsed, config2.handlerOptions);
+    response = await config.handler(parsed, config.handlerOptions);
   } catch (error) {
-    if (config2.onHandlerError === undefined)
+    if (config.onHandlerError === undefined)
       throw error;
-    config2.onHandlerError(error);
+    config.onHandlerError(error);
     return true;
   }
   if (response === undefined)
     return true;
   if (!await writeResponse(response, {
-    output: config2.output,
+    output: config.output,
     responseMode: message.responseMode,
     log
   }))
@@ -9206,14 +8914,14 @@ function isTerminalOutputError(error) {
 function hasErrorCode(error, code) {
   return error instanceof Error && "code" in error && error.code === code;
 }
-function createParentWatchdog(config2, onDeadParent) {
-  if (config2 === undefined)
+function createParentWatchdog(config, onDeadParent) {
+  if (config === undefined)
     return { clear: () => {} };
-  const pollIntervalMs = config2.pollIntervalMs ?? DEFAULT_PARENT_POLL_INTERVAL_MS;
+  const pollIntervalMs = config.pollIntervalMs ?? DEFAULT_PARENT_POLL_INTERVAL_MS;
   if (pollIntervalMs <= 0)
     return { clear: () => {} };
-  const parentPid = config2.parentPid ?? process.ppid;
-  const probeAlive = config2.probeAlive ?? isProcessAlive;
+  const parentPid = config.parentPid ?? process.ppid;
+  const probeAlive = config.probeAlive ?? isProcessAlive;
   let fired = false;
   const timer = setInterval(() => {
     if (fired || probeAlive(parentPid))
@@ -9584,8 +9292,8 @@ async function runCodegraphServe(options = {}) {
   const homeDir = options.homeDir ?? homedir6();
   const wrapperCwd = options.cwd ?? processCwd();
   const projectCwd = resolveProjectCwd(env, wrapperCwd);
-  const config2 = options.config ?? getCodexOmoConfig({ cwd: projectCwd, env, homeDir });
-  const codegraphConfig = config2.codegraph ?? {};
+  const config = options.config ?? getCodexOmoConfig({ cwd: projectCwd, env, homeDir });
+  const codegraphConfig = config.codegraph ?? {};
   if (codegraphConfig.enabled === false) {
     return runUnavailableMcp(CODEGRAPH_DISABLED_HINT, options);
   }
@@ -9597,7 +9305,7 @@ async function runCodegraphServe(options = {}) {
   if (exclusion.excluded) {
     return runUnavailableMcp(CODEGRAPH_EXCLUDED_HINT, options);
   }
-  const trustedInstallDir = config2.trustedCodegraphInstallDir;
+  const trustedInstallDir = config.trustedCodegraphInstallDir;
   const installDir = trustedInstallDir ?? join12(homeDir, ".omo", "codegraph");
   const resolutionOptions = {
     env,

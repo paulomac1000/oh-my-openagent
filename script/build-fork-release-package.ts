@@ -36,6 +36,7 @@ const SECRET_CONTENT_PATTERNS: RegExp[] = [
 	/AKIA[0-9A-Z]{16}/,
 	/(OPENAI|ANTHROPIC|GITHUB|ZAI)_API_KEY\s*=\s*["']?[A-Za-z0-9_-]{20,}/,
 ];
+const NODE_BUILTINS = new Set(require("node:module").builtinModules.flatMap((name) => [name, `node:${name}`]));
 const BARE_IMPORT_EXCLUDE = /^(node:|bun:|@\/|\.|\.\.)/;
 const TEXT_SUFFIXES = new Set([".js", ".mjs", ".cjs", ".ts", ".json", ".md", ".txt", ".schema.json"]);
 const MAX_TEXT_SCAN_BYTES = 512 * 1024;
@@ -122,6 +123,7 @@ function assertRuntimeImportsResolvable(stagingRoot: string): void {
 			}
 			if (!/\.(js|mjs|cjs)$/.test(entry.name)) continue;
 			for (const specifier of collectBareImports(full)) {
+				if (NODE_BUILTINS.has(specifier)) continue;
 				if (!existsSync(join(stagingRoot, "node_modules", specifier))) missing.add(specifier);
 			}
 		}

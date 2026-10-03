@@ -35,6 +35,12 @@ function makeMiniRepo(): string {
 	writeFileSync(join(root, "README.md"), "# oh-my-openagent fork release\n");
 	writeFileSync(join(root, "node_modules/zod/package.json"), JSON.stringify({ name: "zod", version: "4.0.0" }));
 	writeFileSync(join(root, "node_modules/zod/index.js"), "export const z = {};\n");
+	mkdirSync(join(root, "packages/lsp-daemon/dist"), { recursive: true });
+	writeFileSync(join(root, "packages/lsp-daemon/dist/cli.js"), "#!/usr/bin/env node\n");
+	writeFileSync(join(root, "packages/lsp-daemon/package.json"), JSON.stringify({ name: "@oh-my-opencode/lsp-daemon", version: "5.0.0-beta.5" }));
+	mkdirSync(join(root, "packages/lsp-tools-mcp/dist"), { recursive: true });
+	writeFileSync(join(root, "packages/lsp-tools-mcp/dist/index.js"), "export {};\n");
+	writeFileSync(join(root, "packages/lsp-tools-mcp/package.json"), JSON.stringify({ name: "@oh-my-opencode/lsp-tools-mcp", version: "5.0.0-beta.5" }));
 	return root;
 }
 
@@ -124,6 +130,9 @@ describe("fork release packager", () => {
 		expect(readFileSync(join(payloadRoot, "dist/index.js"), "utf8")).toBe(readFileSync(join(repo, "dist/index.js"), "utf8"));
 		expect(existsSync(join(payloadRoot, "node_modules/zod/index.js"))).toBe(true);
 		expect(existsSync(join(payloadRoot, "assets/omo.schema.json"))).toBe(true);
+		expect(existsSync(join(payloadRoot, "packages/lsp-daemon/dist/cli.js"))).toBe(true);
+		expect(existsSync(join(payloadRoot, "packages/lsp-tools-mcp/dist/index.js"))).toBe(true);
+		expect(existsSync(join(payloadRoot, "packages/lsp-daemon/node_modules"))).toBe(false);
 		expect(existsSync(join(payloadRoot, ".omo"))).toBe(false);
 		expect(existsSync(join(payloadRoot, ".local-ignore"))).toBe(false);
 		expect(existsSync(join(payloadRoot, ".env"))).toBe(false);

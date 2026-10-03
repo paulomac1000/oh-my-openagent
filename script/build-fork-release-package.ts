@@ -159,18 +159,30 @@ const COPY_ALLOWLIST = [
 	{ source: "assets", optional: true },
 	{ source: "dist", optional: false },
 	{ source: "node_modules/zod", optional: false },
+	{ source: "packages/lsp-daemon", optional: false, sidecar: true },
+	{ source: "packages/lsp-tools-mcp", optional: false, sidecar: true },
 ];
+const PRUNE_IN_STAGED = ["node_modules", "src", "test", "tests"];
 
-function stagePayload(stagingRoot: string): void {
+function pruneStaged(dir: string): void {
+	for (const name of PRUNE_IN_STAGED) {
+		const target = join(dir, name);
+		if (existsSync(target)) rmSync(target, { recursive: true, force: true });
+	}
+}
+
+function stagePayload(stagingRoot: string, buildRoot: string, enforceBuiltSidecars: boolean): void {
 	for (const entry of COPY_ALLOWLIST) {
-		const source = join(repoRoot, entry.source);
+		const source = join(buildRoot, entry.source);
+		const optional = "sidecar" in entry && entry.sidecar ? !enforceBuiltSidecars : entry.optional;
 		if (!existsSync(source)) {
-			if (entry.optional) continue;
+			if (optional) continue;
 			fail("PAYLOAD_SOURCE_MISSING", entry.source);
 		}
 		const target = join(stagingRoot, entry.source);
 		mkdirSync(join(target, ".."), { recursive: true });
 		cpSync(source, target, { recursive: true });
+		if (entry.source.startsWith("packages/")) pruneStaged(target);
 	}
 }
 
@@ -202,10 +214,14 @@ function main(): void {
 	let outDir = join(REPO_ROOT, ".local-ignore", "fork-release");
 	let skipBuild = false;
 	let rootOverride = "";
+	let enforceBuiltSidecars = true;
 	for (let index = 0; index < args.length; index += 1) {
 		if (args[index] === "--release-tag") releaseTag = args[++index] ?? "";
 		else if (args[index] === "--out-dir") outDir = resolve(args[++index] ?? "");
-		else if (args[index] === "--skip-build") skipBuild = true;
+		else if (args[index] === "--skip-build") {
+			skipBuild = true;
+			enforceBuiltSidecars = false;
+		}
 		else if (args[index] === "--repo-root") rootOverride = resolve(args[++index] ?? "");
 		else fail("UNKNOWN_ARGUMENT", args[index] ?? "");
 	}
@@ -218,13 +234,28 @@ function main(): void {
 	const baseVersion = String(pkg.version);
 	assertReleaseTag(releaseTag, baseVersion);
 
-	if (!skipBuild) exec("bun", ["run", "build"]);
-	if (!existsSync(join(repoRoot, "dist/index.js"))) fail("BUILD_OUTPUT_MISSING", "dist/index.js");
+	let buildRoot = repoRoot;
+	if (!skipBuild) {
+		buildRoot = join(outDir, ".build-root");
+		rmSync(buildRoot, { recursive: true, force: true });
+		mkdirSync(buildRoot, { recursive: true });
+		exec("git", ["archive", sourceSha], repoRoot);
+		const archive = spawnSync("git", ["archive", sourceSha], { cwd: repoRoot, encoding: "buffer" });
+		if (archive.status !== 0) fail("GIT_ARCHIVE_FAILED", archive.stderr?.toString() ?? "");
+		spawnSync("tar", ["-xf", "-", "-C", buildRoot], { input: archive.stdout });
+		if (!existsSync(join(buildRoot, "package.json"))) fail("GIT_ARCHIVE_INCOMPLETE", buildRoot);
+		exec("bun", ["install", "--frozen-lockfile"], buildRoot);
+		exec("bun", ["run", "build"], buildRoot);
+		exec("bun", ["run", "build:lsp-tools-mcp"], buildRoot);
+		exec("bun", ["run", "build:lsp-daemon"], buildRoot);
+	}
+	if (!existsSync(join(buildRoot, "dist/index.js"))) fail("BUILD_OUTPUT_MISSING", "dist/index.js");
+	if (!skipBuild && !existsSync(join(buildRoot, "packages/lsp-daemon/dist/cli.js"))) fail("BUILD_OUTPUT_MISSING", "packages/lsp-daemon/dist/cli.js");
 
 	const stagingRoot = join(outDir, ".staging", "package");
 	rmSync(join(outDir, ".staging"), { recursive: true, force: true });
 	mkdirSync(stagingRoot, { recursive: true });
-	stagePayload(stagingRoot);
+	stagePayload(stagingRoot, buildRoot, enforceBuiltSidecars);
 	scanStagedForSecrets(stagingRoot);
 
 	const entrypointSha256 = sha256File(join(stagingRoot, "dist/index.js"));

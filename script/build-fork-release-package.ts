@@ -181,7 +181,7 @@ function stagePayload(stagingRoot: string, buildRoot: string, enforceBuiltSideca
 		}
 		const target = join(stagingRoot, entry.source);
 		mkdirSync(join(target, ".."), { recursive: true });
-		cpSync(source, target, { recursive: true });
+		cpSync(source, target, { recursive: true, dereference: true, verbatimSymlinks: false });
 		if (entry.source.startsWith("packages/")) pruneStaged(target);
 	}
 }

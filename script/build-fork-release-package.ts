@@ -120,8 +120,11 @@ function collectBareImports(file: string): string[] {
 	return [...imports];
 }
 
-function assertRuntimeImportsResolvable(stagingRoot: string): void {
+const OPTIONAL_EXTERNALS = new Set(["sharp", "@opentui/core", "@opentui/keymap", "@opentui/solid"]);
+
+function assertRuntimeImportsResolvable(stagingRoot: string): string[] {
 	const missing = new Set<string>();
+	const optional = new Set<string>();
 	const walk = (dir: string) => {
 		for (const entry of readdirSync(dir, { withFileTypes: true })) {
 			const full = join(dir, entry.name);
@@ -130,14 +133,23 @@ function assertRuntimeImportsResolvable(stagingRoot: string): void {
 				continue;
 			}
 			if (!/\.(js|mjs|cjs)$/.test(entry.name)) continue;
+			const text = readFileSync(full, "utf8");
 			for (const specifier of collectBareImports(full)) {
 				if (NODE_BUILTINS.has(specifier)) continue;
-				if (!existsSync(join(stagingRoot, "node_modules", specifier))) missing.add(specifier);
+				if (existsSync(join(stagingRoot, "node_modules", specifier))) continue;
+				if (OPTIONAL_EXTERNALS.has(specifier)) {
+					const dynamic = new RegExp(`\\bimport\\(\\s*["']${specifier.replace("/", "\\/")}["']`).test(text);
+					if (!dynamic) fail("STATIC_OPTIONAL_EXTERNAL", `${specifier} in ${relative(stagingRoot, full)}`);
+					optional.add(specifier);
+					continue;
+				}
+				missing.add(specifier);
 			}
 		}
 	};
 	walk(join(stagingRoot, "dist"));
 	if (missing.size > 0) fail("RUNTIME_IMPORT_UNRESOLVABLE", [...missing].join(", "));
+	return [...optional].sort();
 }
 
 const COPY_ALLOWLIST = [
@@ -214,9 +226,9 @@ function main(): void {
 	mkdirSync(stagingRoot, { recursive: true });
 	stagePayload(stagingRoot);
 	scanStagedForSecrets(stagingRoot);
-	assertRuntimeImportsResolvable(stagingRoot);
 
 	const entrypointSha256 = sha256File(join(stagingRoot, "dist/index.js"));
+	const optionalExternals = assertRuntimeImportsResolvable(stagingRoot);
 	const manifest = {
 		repository: FORK_REPO,
 		sourceSha,
@@ -228,6 +240,7 @@ function main(): void {
 		},
 		entrypoint: "dist/index.js",
 		entrypointSha256,
+		optionalExternals,
 		buildRecipe: "bun run build (bun build --target bun --format esm packages/omo-opencode/src/index.ts --external zod); payload = dist + node_modules/zod + assets/*.schema.json + package.json + README/LICENSE",
 	};
 	const manifestBytes = `${JSON.stringify(manifest, null, 2)}\n`;

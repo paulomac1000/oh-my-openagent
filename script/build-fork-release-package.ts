@@ -299,8 +299,8 @@ function main(): void {
 	);
 	rmSync(join(outDir, ".staging"), { recursive: true, force: true });
 	if (cleanRoom) {
-		exec("git", ["worktree", "remove", "--force", buildRoot], repoRoot);
-		exec("git", ["worktree", "prune"], repoRoot);
+		spawnSync("git", ["worktree", "remove", "--force", buildRoot], { cwd: repoRoot });
+		spawnSync("git", ["worktree", "prune"], { cwd: repoRoot });
 	}
 	console.log(`PACKAGED tag=${releaseTag} source=${sourceSha} artifact=${artifactPath} sha256=${artifactSha256}`);
 }
